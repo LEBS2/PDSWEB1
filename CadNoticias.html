@@ -42,21 +42,72 @@
                 <input class="form-control" id="file" name="file" type="file" required onchange="replaceImage(event)" style="display: none;">
             </div>
 
-            <div class="mb-3">
-                <label for="titulo" class="form-label">Título</label>
-                <input type="text" class="form-control" id="titulo" name="titulo" required aria-describedby="nameHelp">
-                <div class="invalid-feedback">
-                    Campo obrigatório.
+            <div id="titulo">
+              <label style="color: white; font-size: 20px; margin-left: 43%;" for="description" class="form-label">Título</label>
+              <div class="editor-container">
+                <div class="toolbar">
+                    <button class="button" onclick="formatText('bold')"><b>B</b></button>
+                    <button class="button" onclick="formatText('italic')"><i>I</i></button>
+                    <button class="button" onclick="formatText('underline')"><u>U</u></button>
+                    <button class="button" onclick="formatText('insertOrderedList')">OL</button>
+                    <button class="button" onclick="formatText('insertUnorderedList')">UL</button>
+                    <button class="button" onclick="clearContent()">Limpar</button>
+                    <select class="select" onchange="changeFontSize(this.value)">
+                        <option value="">Tamanho da Fonte</option>
+                        <option value="1">Pequeno</option>
+                        <option value="3">Normal</option>
+                        <option value="5">Grande</option>
+                        <option value="7">Muito Grande</option>
+                    </select>
+                    <select class="select" onchange="changeFontFamily(this.value)">
+                        <option value="">Fonte</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Verdana">Verdana</option>
+                    </select>
+                    
+                    <input style="margin-top: 5%;" type="color" onchange="changeTextColor(this.value)" title="Mudar Cor">
                 </div>
-            </div>
+                <div id="editorTitulo" contenteditable="true"></div>
+            </div>            </div>
 
-            <div class="mb-3">
-                <label for="description" class="form-label">Descrição do arquivo</label>
-                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Digite uma descrição..." required></textarea>
-            </div>
+            <br>
 
-            <button type="submit" class="btn btn-primary" id="submit-btn">PUBLICAR</button>
-            <button type="submit" class="btn btn-primary" id="submit-btn2">CANCELAR</button>
+            <div id="descricaoTXT">
+                <label style="color: white; font-size: 20px; margin-left: 28.5%;" for="description" class="form-label">Descrição da Notícia</label>
+                <div class="editor-container">
+                  <div class="toolbar">
+                      <button onclick="formatText('bold')"><b>B</b></button>
+                      <button onclick="formatText('italic')"><i>I</i></button>
+                      <button onclick="formatText('underline')"><u>U</u></button>
+                      <button onclick="formatText('insertOrderedList')">OL</button>
+                      <button onclick="formatText('insertUnorderedList')">UL</button>
+                      <button onclick="clearContent()">Limpar</button>
+                      <select onchange="changeFontSize(this.value)">
+                          <option value="">Tamanho da Fonte</option>
+                          <option value="1">Pequeno</option>
+                          <option value="3">Normal</option>
+                          <option value="5">Grande</option>
+                          <option value="7">Muito Grande</option>
+                      </select>
+                      <select onchange="changeFontFamily(this.value)">
+                          <option value="">Fonte</option>
+                          <option value="Arial">Arial</option>
+                          <option value="Courier New">Courier New</option>
+                          <option value="Georgia">Georgia</option>
+                          <option value="Times New Roman">Times New Roman</option>
+                          <option value="Verdana">Verdana</option>
+                      </select>
+                      
+                      <input style="margin-top: 5%;" id="color" type="color" onchange="changeTextColor(this.value)" title="Mudar Cor">
+                  </div>
+                  <div id="editor" contenteditable="true"></div>
+              </div>            </div>
+
+            <button type="submit" class="btn btn-primary" id="submit-btn">CANCELAR</button>
+            <button type="submit" class="btn btn-primary" id="submit-btn2">PUBLICAR</button>
 
         </div>
     </form>

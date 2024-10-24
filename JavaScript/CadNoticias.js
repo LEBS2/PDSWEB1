@@ -30,3 +30,27 @@ window.onload = function () {
         document.getElementById('UploadArquivos').src = savedImage; // Define a imagem salva como o src
     }
 };
+
+function formatText(command) {
+    document.execCommand(command, false, null);
+}
+
+function clearContent() {
+    document.getElementById('editor').innerHTML = '';
+}
+
+function changeFontSize(size) {
+    if (size) {
+        document.execCommand('fontSize', false, size);
+    }
+}
+
+function changeFontFamily(font) {
+    if (font) {
+        document.execCommand('fontName', false, font);
+    }
+}
+
+function changeTextColor(color) {
+    document.execCommand('foreColor', false, color);
+}
