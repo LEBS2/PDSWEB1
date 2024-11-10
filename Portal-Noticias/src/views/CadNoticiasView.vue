@@ -47,36 +47,11 @@ import { RouterLink, RouterView } from 'vue-router'
                 <input class="form-control" id="file" name="file" type="file" required onchange="replaceImage(event)" style="display: none;">
             </div>
 
-            <div id="titulo">
-              <label style="color: white; font-size: 20px; margin-left: 43%;" for="description" class="form-label">Título</label>
-              <div class="editor-container">
-                <div class="toolbar">
-                    <button class="button" onclick="formatText('bold')"><b>B</b></button>
-                    <button class="button" onclick="formatText('italic')"><i>I</i></button>
-                    <button class="button" onclick="formatText('underline')"><u>U</u></button>
-                    <button class="button" onclick="formatText('insertOrderedList')">OL</button>
-                    <button class="button" onclick="formatText('insertUnorderedList')">UL</button>
-                    <button class="button" onclick="clearContent()">Limpar</button>
-                    <select class="select" onchange="changeFontSize(this.value)">
-                        <option value="">Tamanho da Fonte</option>
-                        <option value="1">Pequeno</option>
-                        <option value="3">Normal</option>
-                        <option value="5">Grande</option>
-                        <option value="7">Muito Grande</option>
-                    </select>
-                    <select class="select" onchange="changeFontFamily(this.value)">
-                        <option value="">Fonte</option>
-                        <option value="Arial">Arial</option>
-                        <option value="Courier New">Courier New</option>
-                        <option value="Georgia">Georgia</option>
-                        <option value="Times New Roman">Times New Roman</option>
-                        <option value="Verdana">Verdana</option>
-                    </select>
-                    
-                    <input style="margin-top: 5%;" type="color" onchange="changeTextColor(this.value)" title="Mudar Cor">
-                </div>
-                <div id="editorTitulo" contenteditable="true"></div>
-            </div>            </div>
+            <div class="mb-3">
+                <label for="file" class="form-label">Título</label>
+                <!-- O input file agora está escondido -->
+                <input style="font-size: 32px; color: black" class="form-control" type="text">
+            </div>  
 
             <br>
 
@@ -220,15 +195,15 @@ img{
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     margin-left: 25%;
     padding: 2px;
-    background-color: #2362b4;
+    background-color: #004AAD;
 }
 
 .editor-container {
-    border: 1px solid #ccc;
+    border: 1px solid #004AAD;
     border-radius: 5px;
-    background-color: #fff;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #004AAD;
+    padding: 1px;
+    box-shadow: 0 2px 5px #004AAD;
 }
 
 .toolbar {
@@ -240,7 +215,7 @@ button, select {
     margin-right: 5px;
     padding: 5px 10px;
     cursor: pointer;
-    border: 1px solid #004AAD;
+    border: 1px solid white;
     border-radius: 7px;
     background-color: #004AAD;
     color: white;
@@ -252,32 +227,7 @@ button, select {
     padding: 10px;
     overflow-y: auto;
     outline: none; /* Remove outline ao focar */
-}
-
-#titulo {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    margin-left: 25%;
-    padding: 2px;
-    background-color: #07A7F1;
-}
-
-#editorTitulo{
-    min-height: 20px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    overflow-y: auto;
-    outline: none; /* Remove outline ao focar */
-}
-
-.button, .select {
-    margin-top: 5%;
-    margin-right: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    border: 1px solid #07A7F1;
-    border-radius: 7px;
-    background-color: #07A7F1;
-    color: white;
+    background-color: white;
 }
 
 </style>
