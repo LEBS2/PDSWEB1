@@ -1,5 +1,27 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import { ref } from 'vue';
+import DAOService from '@/services/DAOService';
+
+const dbService = new DAOService('administrador');
+
+const nomeCompleto = ref('');
+const email = ref('');
+const senha = ref('');
+
+const addAdmin = async () => {
+    const admin = {
+        nome: nome.value,
+        email: email.value,
+        senha: senha.value
+    };
+
+    id = await dbService.insert(admin);
+    alert('Administrador cadastrado com sucesso!')
+    console.log(id);
+    limparForm();
+};
+
 </script>
 
 <template>
@@ -27,7 +49,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
         <div class="mb-3">
             <label for="nome" class="form-label">Nome completo</label>
-            <input type="text" class="form-control" id="nome" name="nome" required aria-describedby="nameHelp">
+            <input type="text" class="form-control" id="nome" name="nome" v-model="nome" required aria-describedby="nameHelp">
             <div class="invalid-feedback">
                 Campo obrigatório.
             </div>
@@ -35,7 +57,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
         <div class="mb-3">
             <label for="email" class="form-label">E-mail</label>
-            <input type="email" class="form-control" id="email" name="email" required aria-describedby="nameHelp">
+            <input type="email" class="form-control" id="email" name="email" v-model="email" required aria-describedby="nameHelp">
             <div class="invalid-feedback">
                 Campo obrigatório.
             </div>
@@ -43,11 +65,11 @@ import { RouterLink, RouterView } from 'vue-router'
 
         <div class="mb-3">
             <label for="senha" class="form-label">Senha</label>
-            <input type="password" class="form-control" id="senha" name="senha" required aria-describedby="nameHelp">
+            <input type="password" class="form-control" id="senha" name="senha" v-model="senha" required aria-describedby="nameHelp">
 
         </div>
 
-        <button type="submit" class="btn btn-primary" id="submit-btn">ENTRAR</button>
+        <button type="submit" @click="addAdmin()" class="btn btn-primary" id="submit-btn">CADASTRAR</button>
         <button type="submit" class="btn btn-primary" id="submit-btn2">CANCELAR</button>
 
     </form>
