@@ -86,9 +86,13 @@ import { RouterLink, RouterView } from 'vue-router'
                   <div id="editor" contenteditable="true"></div>
               </div>            </div>
 
+            <RouterLink to="/">  
             <button type="submit" class="btn btn-primary" id="submit-btn">CANCELAR</button>
-            <button type="submit" class="btn btn-primary" id="submit-btn2">PUBLICAR</button>
+            </RouterLink>
 
+            <RouterLink to="/usuarioHome"> 
+            <button type="submit" class="btn btn-primary" id="submit-btn2">PUBLICAR</button>
+            </RouterLink>
         </div>
     </form>
 

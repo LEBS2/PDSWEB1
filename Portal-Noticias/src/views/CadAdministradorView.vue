@@ -5,7 +5,7 @@ import DAOService from '@/services/DAOService';
 
 const dbService = new DAOService('administrador');
 
-const nomeCompleto = ref('');
+const nome = ref('');
 const email = ref('');
 const senha = ref('');
 
@@ -16,10 +16,9 @@ const addAdmin = async () => {
         senha: senha.value
     };
 
-    id = await dbService.insert(admin);
+    const id = await dbService.insert(admin);
     alert('Administrador cadastrado com sucesso!')
     console.log(id);
-    limparForm();
 };
 
 </script>
@@ -69,9 +68,14 @@ const addAdmin = async () => {
 
         </div>
 
+        <RouterLink to="/PaginaInicial">
         <button type="submit" @click="addAdmin()" class="btn btn-primary" id="submit-btn">CADASTRAR</button>
-        <button type="submit" class="btn btn-primary" id="submit-btn2">CANCELAR</button>
+        </RouterLink>
 
+        <RouterLink to="/">
+        <button type="submit" class="btn btn-primary" id="submit-btn2">CANCELAR</button>
+        </RouterLink>
+    
     </form>
 
     <img clas style="visibility: hidden;" src="@/assets/imgFundoAdmin.jpg">

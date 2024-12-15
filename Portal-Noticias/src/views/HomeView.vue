@@ -7,8 +7,13 @@ import { RouterLink, RouterView } from 'vue-router'
 <img id="logoImage" src="../assets/LogoBoasNovas.png" alt="Logo">
 
 
-<button type="submit" class="btn btn-primary" id="submit-btn">ADMINISTRADOR</button>
+<RouterLink to="/loginAdmin">
+      <button type="submit" class="btn btn-primary" id="submit-btn">ADMINISTRADOR</button>
+    </RouterLink>
+   
+<RouterLink to="/login">
 <button style="margin-left: 4%;" type="submit" class="btn btn-primary" id="submit-btn">CLIENTE</button>
+</RouterLink>
 
 </template>
 

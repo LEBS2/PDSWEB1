@@ -31,7 +31,7 @@ import { RouterLink, RouterView } from 'vue-router'
         </div>
 
         <button type="submit" class="btn btn-primary" id="submit-btn">CONTINUAR</button>
-        <div id="nameHelp" class="form-text">Não tem conta?  <u>Crie sua conta</u></div>
+        <div id="nameHelp" class="form-text">Não tem conta?  <RouterLink to="/usuario"><u>Crie sua conta</u></RouterLink></div>
 
         <hr class="linha1"> <hr class="linha2">
 

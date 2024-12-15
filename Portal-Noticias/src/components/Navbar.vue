@@ -14,21 +14,27 @@ import { RouterLink, RouterView } from 'vue-router'
 </head>
   <body>
 
-    <nav style="background-color: white !important;" class="navbar bg-body-tertiary">
+    <nav style="background-color: white !important; margin-left: 0%" class="navbar bg-body-tertiary">
         
         <div class="container-fluid">
           <form class="d-flex" role="search">
-            <a style="margin: 5%; margin-top: 4%; visibility: hidden;"class="nav-link active" aria-current="page" href="LoginView.vue">Voltar</a>
-            <input style="visibility: hidden;" id="buscar" type="search">
-            
-            <a style="margin: 3%; margin-left: 157%; margin-top: 5%;" class="nav-link active" aria-current="page" href="ApresentacaoView.vue">Início</a>
-            <a style="margin: 4%; margin-top: 5%;" class="nav-link active" aria-current="page" href="CategoriasView.vue">Categorias</a>
-            <a style="margin: 5%;" class="nav-link active" aria-current="page" href="SobreView.vue">Sobre</a>
+            <RouterLink style="margin: 7%; margin-left: 600%; margin-top: 12%; display: flex;" class="nav-link active" to="/saude">
+            <a aria-current="page">Saúde</a>
+            </RouterLink>
 
+            <RouterLink to="/esporte">
+            <a style="margin: 4%; margin-top: 34%; color: #030E43;" class="nav-link active" aria-current="page">Esportes</a>
+            </RouterLink>
 
-        </form>
-          <a  style="margin: 5.75%;" class="nav-link active" aria-current="page" href="LoginView.vue">Contatos</a>
-          
+            <RouterLink to="/sobre">
+            <a style="margin: 55%; margin-top: 51%; color: #030E43" class="nav-link active" aria-current="page">Sobre</a>
+            </RouterLink>
+            <RouterLink to="/">
+            <a style="margin: 165%; margin-top: 80%; color: #030E43" class="nav-link active" aria-current="page">Sair</a>
+            </RouterLink>
+
+            </form>
+
         </div>
 
         <img id="logoImage" src="../assets/LogoBoasNovas.png" alt="Logo">
@@ -42,9 +48,9 @@ import { RouterLink, RouterView } from 'vue-router'
           <form class="d-flex" role="search">
             <input style="visibility: hidden;" id="buscar" type="search">
             
-            <a style="margin: 3%; margin-left: 157%; margin-top: 5%;" class="nav-link active" aria-current="page" href="ApresentacaoView.vue">FUTEBOL</a>
-            <a style="margin: 4%; margin-top: 5%;" class="nav-link active" aria-current="page" href="CategoriasView.vue">BRASILEIRÃO</a>
-            <a  style="margin: 5%;" class="nav-link active" aria-current="page" href="LoginView.vue">LIBERTADORES</a>
+            <a style="margin: 3%; margin-left: 157%; margin-top: 5%;" class="nav-link active" aria-current="page" href="#futebol">FUTEBOL</a>
+            <a style="margin: 4%; margin-top: 5%;" class="nav-link active" aria-current="page" href="#brasileirao">BRASILEIRÃO</a>
+            <a  style="margin: 5%;" class="nav-link active" aria-current="page" href="#libertadores">LIBERTADORES</a>
 
        
         </form>
@@ -56,7 +62,7 @@ import { RouterLink, RouterView } from 'vue-router'
       <h1 style="margin-left: 42%; margin-top: 7%; text-decoration: none; color: #092553;">ESPORTES</h1>
 
 
-      <h1 style="margin-left: 5.5%; margin-top: 5%; text-decoration: underline;">FUTEBOOL</h1>
+      <h1 style="margin-left: 5.5%; margin-top: 5%; text-decoration: underline;" id="futebol">FUTEBOOL</h1>
 
 <div class="card mb-3" style="max-width: 1100px;">
   <div class="row g-0">
@@ -76,7 +82,7 @@ DESCRIÇÃO,DESCRIÇÃO,DESCRIÇÃO,DESCRIÇÃO,</p>
   </div>
 </div>
 
-<h1 style="margin-left: 42%; margin-top: 7%; text-decoration: none; color: black;">BRASILEIRÃO</h1>
+<h1 style="margin-left: 42%; margin-top: 7%; text-decoration: none; color: black;" id="brasileirao">BRASILEIRÃO</h1>
 
 <div style="margin-left: 9%; margin-top: 4%;" class="row row-cols-1 row-cols-md-2 g-4">
   <div class="col">
@@ -98,7 +104,7 @@ DESCRIÇÃO,DESCRIÇÃO,DESCRIÇÃO,DESCRIÇÃO,</p>
     </div>
   </div>
 
-  <h1 style="margin-left: 33%; margin-top: -12%; text-decoration: none; color: black;">LIBERTADORES</h1>
+  <h1 style="margin-left: 33%; margin-top: -12%; text-decoration: none; color: black;" id="libertadores">LIBERTADORES</h1>
 
   <div class="col">
     <div class="card">
@@ -144,16 +150,16 @@ DESCRIÇÃO,DESCRIÇÃO,DESCRIÇÃO,DESCRIÇÃO,</p>
 }
 
 #logoImage{
-    width: 14%;
-    height: 100%;
-    margin-left: 2%;
-    margin-top: -14%;
+    width: 20%;
+    height: 0%;
+    margin-top: -15%;
+    margin-left: 3%;
+    display: flex;
 }
-
 .container-fluid{
     text-decoration: underline;
     color: #030E43;
-    margin-top: 0%;
+    margin-top: 4%;
     
 }
 

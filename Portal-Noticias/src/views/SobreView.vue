@@ -16,25 +16,33 @@ import { RouterLink, RouterView } from 'vue-router'
 </head>
 
 <body>
-
-
-    <nav style="background-color: white !important;" class="navbar bg-body-tertiary">
+    <nav style="background-color: white !important; margin-left: 4%;" class="navbar bg-body-tertiary">
         
         <div class="container-fluid">
           <form class="d-flex" role="search">
-            <a style="margin: 5%; margin-top: 4%;" class="nav-link active" aria-current="page" href="LoginView.vue">Voltar</a>
-            <input style="visibility: hidden;" id="buscar" type="search">
+            <RouterLink to="/loginAdmin">
+            <a style="margin: 5%; margin-top: 25%; color: #030E43;" class="nav-link active" aria-current="page">Voltar</a>
+            </RouterLink>
+            <input style="margin-left: 5%; visibility: hidden;" id="buscar" type="search">
             
-            <a style="margin: 3%; margin-left: 157%; margin-top: 5%;" class="nav-link active" aria-current="page" href="ApresentacaoView.vue">Início</a>
-            <a style="margin: 4%; margin-top: 5%;" class="nav-link active" aria-current="page" href="CategoriasView.vue">Categorias</a>
-            <a style="margin: 5%;" class="nav-link active" aria-current="page" href="SobreView.vue">Sobre</a>
+            <RouterLink style="margin: 3%; margin-left: 157%; margin-top: 5%;" class="nav-link active" to="/saude">
+            <a aria-current="page">Saúde</a>
+            </RouterLink>
 
+            <RouterLink to="/esporte">
+            <a style="margin: 4%; margin-top: 34%; color: #030E43;" class="nav-link active" aria-current="page" href="CategoriasView.vue">Esportes</a>
+            </RouterLink>
+
+            <RouterLink to="/sobre">
+            <a style="margin: 55%; margin-top: 51%; color: #030E43" class="nav-link active" aria-current="page" href="SobreView.vue">Sobre</a>
+            </RouterLink>
+            <RouterLink to="/">
+            <a style="margin: 165%; margin-top: 80%; color: #030E43" class="nav-link active" aria-current="page" href="SobreView.vue">Sair</a>
+            </RouterLink>
 
         </form>
-          <a  style="margin: 5.75%;" class="nav-link active" aria-current="page" href="LoginView.vue">Sign out</a>
-          
+      
         </div>
-
         <img style="visibility: hidden;" id="logoImage" src="../assets/LogoBoasNovas.png" alt="Logo">
         
       </nav>    

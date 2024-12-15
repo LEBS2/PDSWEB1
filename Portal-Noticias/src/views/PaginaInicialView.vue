@@ -11,8 +11,10 @@ import Cards from '@/components/Cards.vue';
 
     <Cards/>
 
+    <RouterLink to="/noticias">
     <button type="button" class="btn btn-primary" id="submit-btn2">ADICIONAR NOTÍCIAS</button> 
-  
+    </RouterLink>
+
 </template>
 
 <style scoped>

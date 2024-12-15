@@ -7,8 +7,6 @@ import { RouterLink, RouterView } from 'vue-router'
 
     <Navbar/>
 
-    
-
 </template>
 
 <style scoped></style>
