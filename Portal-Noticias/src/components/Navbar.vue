@@ -17,7 +17,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <nav style="background-color: white !important; margin-left: 0%" class="navbar bg-body-tertiary">
         
         <div class="container-fluid">
-          <form class="d-flex" role="search">
+
             <RouterLink style="margin: 7%; margin-left: 600%; margin-top: 12%; display: flex;" class="nav-link active" to="/saude">
             <a aria-current="page">Saúde</a>
             </RouterLink>
@@ -33,8 +33,6 @@ import { RouterLink, RouterView } from 'vue-router'
             <a style="margin: 165%; margin-top: 80%; color: #030E43" class="nav-link active" aria-current="page">Sair</a>
             </RouterLink>
 
-            </form>
-
         </div>
 
         <img id="logoImage" src="../assets/LogoBoasNovas.png" alt="Logo">
@@ -46,8 +44,7 @@ import { RouterLink, RouterView } from 'vue-router'
         
         <div style="margin-top: -0.5%; color: white; text-decoration: none; margin-left: -6.5%;" class="container-fluid">
           <form class="d-flex" role="search">
-            <input style="visibility: hidden;" id="buscar" type="search">
-            
+
             <a style="margin: 3%; margin-left: 157%; margin-top: 5%;" class="nav-link active" aria-current="page" href="#futebol">FUTEBOL</a>
             <a style="margin: 4%; margin-top: 5%;" class="nav-link active" aria-current="page" href="#brasileirao">BRASILEIRÃO</a>
             <a  style="margin: 5%;" class="nav-link active" aria-current="page" href="#libertadores">LIBERTADORES</a>
@@ -104,7 +101,7 @@ DESCRIÇÃO,DESCRIÇÃO,DESCRIÇÃO,DESCRIÇÃO,</p>
     </div>
   </div>
 
-  <h1 style="margin-left: 33%; margin-top: -12%; text-decoration: none; color: black;" id="libertadores">LIBERTADORES</h1>
+  <h1 style="margin-left: 33%; margin-top: -12%; text-decoration: none; color: black;" id="futebol">LIBERTADORES</h1>
 
   <div class="col">
     <div class="card">

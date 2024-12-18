@@ -1,4 +1,4 @@
-import { firestore } from '../firebase';
+import { firestore } from '../firebase'; // Importa a configuração do Firestore
 import { collection, addDoc, updateDoc, deleteDoc, getDocs, getDoc, doc, query, where } from 'firebase/firestore';
 
 class DAOService {
@@ -6,57 +6,71 @@ class DAOService {
     if (!collectionPath) {
       throw new Error('Collection path must be provided');
     }
-    this.collectionRef = collection(firestore, collectionPath);
+    this.collectionRef = collection(firestore, collectionPath); // Referência à coleção
   }
 
   // Função para buscar documentos por um campo específico
   async search(property, value) {
     try {
-      const q = query(this.collectionRef, where(property, '==', value));
-      const querySnapshot = await getDocs(q);
+      const q = query(this.collectionRef, where(property, '==', value)); // Busca no Firestore
+      const querySnapshot = await getDocs(q); // Executa a busca
       const documents = [];
 
-      querySnapshot.forEach(doc => {
-        documents.push({ id: doc.id, ...doc.data() });
+      querySnapshot.forEach((doc) => {
+        documents.push({ id: doc.id, ...doc.data() }); // Adiciona o documento encontrado
       });
 
-      return documents;
+      return documents; // Retorna os documentos encontrados
     } catch (error) {
       console.error('Erro ao buscar documentos: ', error);
       throw new Error('Erro ao buscar documentos');
     }
   }
 
+  // Função para inserir um administrador (cadastrar)
+  async insert(object) {
+    try {
+      const docRef = await addDoc(this.collectionRef, object); // Adiciona documento ao Firestore
+      return docRef.id;
+    } catch (error) {
+      console.error('Erro ao adicionar documento: ', error);
+      throw new Error('Erro ao adicionar documento');
+    }
+  }
+  // Função para inserir um novo documento na coleção
   async insert(object) {
     try {
       const docRef = await addDoc(this.collectionRef, object);
-      return docRef.id;
+      return docRef.id; // Retorna o ID do novo documento inserido
     } catch (error) {
-      console.error('Error adding document: ', error);
-      throw new Error('Error adding document');
+      console.error('Erro ao adicionar documento: ', error);
+      throw new Error('Erro ao adicionar documento');
     }
   }
 
+  // Função para atualizar um documento existente
   async update(id, object) {
     try {
-      const docRef = doc(firestore, this.collectionRef.path, id);
-      await updateDoc(docRef, object);
+      const docRef = doc(firestore, this.collectionRef.path, id); // Referência ao documento
+      await updateDoc(docRef, object); // Atualiza o documento com os novos dados
     } catch (error) {
-      console.error('Error updating document: ', error);
-      throw new Error('Error updating document');
+      console.error('Erro ao atualizar documento: ', error);
+      throw new Error('Erro ao atualizar documento');
     }
   }
 
+  // Função para deletar um documento
   async delete(id) {
     try {
-      const docRef = doc(firestore, this.collectionRef.path, id);
-      await deleteDoc(docRef);
+      const docRef = doc(firestore, this.collectionRef.path, id); // Referência ao documento
+      await deleteDoc(docRef); // Deleta o documento
     } catch (error) {
-      console.error('Error deleting document: ', error);
-      throw new Error('Error deleting document');
+      console.error('Erro ao deletar documento: ', error);
+      throw new Error('Erro ao deletar documento');
     }
   }
 
+  // Função para obter todos os documentos de uma coleção
   async getAll() {
     try {
       const querySnapshot = await getDocs(this.collectionRef);
@@ -68,41 +82,25 @@ class DAOService {
 
       return documents;
     } catch (error) {
-      console.error('Error getting documents: ', error);
-      throw new Error('Error getting documents');
+      console.error('Erro ao obter documentos: ', error);
+      throw new Error('Erro ao obter documentos');
     }
   }
 
+  // Função para obter um único documento por ID
   async get(id) {
     try {
       const docRef = doc(firestore, this.collectionRef.path, id);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        return { id: docSnap.id, ...docSnap.data() };
+        return { id: docSnap.id, ...docSnap.data() }; // Retorna o documento encontrado
       } else {
-        throw new Error('No such document!');
+        throw new Error('Documento não encontrado!');
       }
     } catch (error) {
-      console.error('Error getting document: ', error);
-      throw new Error('Error getting document');
-    }
-  }
-
-  async search(property, value) {
-    try {
-      const q = query(this.collectionRef, where(property, '==', value));
-      const querySnapshot = await getDocs(q);
-      const documents = [];
-
-      querySnapshot.forEach(doc => {
-        documents.push({ id: doc.id, ...doc.data() });
-      });
-      
-      return documents;
-    } catch (error) {
-      console.error('Error searching documents: ', error);
-      throw new Error('Error searching documents');
+      console.error('Erro ao obter documento: ', error);
+      throw new Error('Erro ao obter documento');
     }
   }
 }

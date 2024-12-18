@@ -1,6 +1,26 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { ref } from 'vue';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { useRouter } from 'vue-router';
 
+const email = ref('');
+const senha = ref('');
+const router = useRouter();
+
+const autenticar = async () => {
+  const auth = getAuth();
+  
+  try {
+    // Tentando autenticar com email e senha
+    const userCredential = await signInWithEmailAndPassword(auth, email.value, senha.value);
+    const user = userCredential.user;
+    alert("Usuário autenticado com sucesso!");
+    // Redireciona para a página home após login bem-sucedido
+    router.push('/home');
+  } catch (error) {
+    alert("Erro ao autenticar: " + error.message); // Exibe erro, se houver
+  }
+};
 </script>
 
 <template>

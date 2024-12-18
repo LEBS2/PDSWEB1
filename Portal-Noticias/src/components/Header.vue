@@ -21,7 +21,7 @@ import { RouterLink, RouterView } from 'vue-router'
             <RouterLink to="/loginAdmin">
             <a style="margin: 5%; margin-top: 25%; color: #030E43;" class="nav-link active" aria-current="page">Voltar</a>
             </RouterLink>
-            <input style="margin-left: 5%;" id="buscar" type="search">
+            <input style="margin-left: 5%; visibility: hidden;" id="buscar" type="search">
             
             <RouterLink style="margin: 3%; margin-left: 157%; margin-top: 5%;" class="nav-link active" to="/saude">
             <a aria-current="page">Saúde</a>
@@ -128,7 +128,7 @@ img{
 
 #buscar{
     height: 42px;
-    margin-top: 2%;
+    margin-top: 0%;
     border-radius: 10px;
     border: 1px solid #030E43;
 }
