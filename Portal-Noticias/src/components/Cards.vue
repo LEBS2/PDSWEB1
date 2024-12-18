@@ -135,6 +135,7 @@ h1 {
 ------------------------------ */
 
 .card {
+  margin-left: 5.5%;
   margin-bottom: 30px; /* Aumenta o espaço entre os cards */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona sombra para destacar os cards */
   border-radius: 8px; /* Bordas arredondadas para os cards */
@@ -147,6 +148,7 @@ h1 {
 .card-body {
   padding: 20px;
   overflow-y: auto; /* Permite o conteúdo rolar se for maior que o espaço disponível */
+
 }
 
 .card-title {
