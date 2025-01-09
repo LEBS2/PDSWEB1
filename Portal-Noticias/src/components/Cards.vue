@@ -1,63 +1,95 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
+import { RouterLink } from 'vue-router';
+import DAOService from '@/services/DAOService';
 
-// Defina sua chave de API aqui
-const apiKey = 'cf3c67159394429bb05f26501010b6b6';  // Substitua 'YOUR_API_KEY' pela chave da sua API
+const dbService = new DAOService('noticias');
+
+// Variáveis para capturar dados do formulário
+const titulo = ref('');
+const descricao = ref('');
+const imagemUrl = ref(''); // Link da imagem
 
 // Variáveis para armazenar as notícias
 const noticiasFutebol = ref([]);
 const noticiasSaudeMental = ref([]);
+const noticiasPublicadas = ref([]); // Para armazenar notícias publicadas
 
-// Variáveis para armazenar os termos de pesquisa
-const searchQuery = ref('');
+// Chave da API
+const apiKey = 'cf3c67159394429bb05f26501010b6b6'; // Substitua pela sua chave da API
 
-// Função para buscar as notícias
+// Função para buscar notícias
 const fetchNoticias = async () => {
   try {
-    // URL da NewsAPI para notícias de Futebol
-    const responseFutebol = await fetch(`https://newsapi.org/v2/everything?q=football&apiKey=${apiKey}`);
-    const responseSaudeMental = await fetch(`https://newsapi.org/v2/everything?q=mental+health&apiKey=${apiKey}`);
-    
-    // Obter os dados em formato JSON
-    const dataFutebol = await responseFutebol.json();
-    const dataSaudeMental = await responseSaudeMental.json();
+    const responseFutebol = await fetch(`https://newsapi.org/v2/everything?q=futebol+brasileiro&language=pt&sortBy=publishedAt&apiKey=${apiKey}`);
+    const responseSaudeMental = await fetch(`https://newsapi.org/v2/everything?q=saúde+mental&language=pt&sortBy=publishedAt&apiKey=${apiKey}`);
 
-    // Armazenar os artigos nas variáveis reativas
-    noticiasFutebol.value = dataFutebol.articles;
-    noticiasSaudeMental.value = dataSaudeMental.articles;
+    if (responseFutebol.ok && responseSaudeMental.ok) {
+      const dataFutebol = await responseFutebol.json();
+      const dataSaudeMental = await responseSaudeMental.json();
+      
+      noticiasFutebol.value = filterNoticias(dataFutebol.articles);
+      noticiasSaudeMental.value = filterNoticias(dataSaudeMental.articles);
+    }
   } catch (error) {
-    console.error('Erro ao carregar as notícias', error);
+    console.error('Erro ao carregar as notícias:', error);
   }
 };
 
-// Chamar a função de buscar notícias quando o componente for montado
-onMounted(fetchNoticias);
+// Filtra as notícias, removendo duplicatas e verificando título e link
+const filterNoticias = (articles) => {
+  const seen = new Set();
+  return articles
+    .filter(noticia => noticia.title && noticia.url) // Filtra notícias sem título ou link
+    .filter(noticia => {
+      const key = `${noticia.title}-${noticia.url}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+};
 
-// Computed para filtrar as notícias de acordo com a pesquisa
-const noticiasFiltradasFutebol = computed(() => {
-  const query = searchQuery.value.trim().toLowerCase();
-  if (!query) return noticiasFutebol.value;
+// Função para salvar notícia no banco de dados
+const publicarNoticia = async () => {
+  const noticia = {
+    titulo: titulo.value,
+    descricao: descricao.value,
+    imagemUrl: imagemUrl.value,
+  };
 
-  return noticiasFutebol.value.filter(noticia => {
-    const title = noticia.title.toLowerCase();
-    const description = noticia.description ? noticia.description.toLowerCase() : '';
-    
-    // Verifica se o termo de pesquisa está em qualquer parte do título ou descrição
-    return title.includes(query) || description.includes(query);
+  const id = await dbService.insert(noticia);
+  alert('Notícia publicada com sucesso!');
+  console.log(id);
+  
+  // Após publicar, recarrega as notícias do banco
+  carregarNoticiasCadastradas();
+};
+
+// Função para carregar as notícias cadastradas
+const carregarNoticiasCadastradas = async () => {
+  const noticias = await dbService.getAll();
+  noticiasPublicadas.value = noticias;
+};
+
+// Função para formatar a data
+const formatarData = (dataISO) => {
+  const data = new Date(dataISO);
+  return data.toLocaleString('pt-BR', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: false,
   });
-});
+};
 
-const noticiasFiltradasSaudeMental = computed(() => {
-  const query = searchQuery.value.trim().toLowerCase();
-  if (!query) return noticiasSaudeMental.value;
-
-  return noticiasSaudeMental.value.filter(noticia => {
-    const title = noticia.title.toLowerCase();
-    const description = noticia.description ? noticia.description.toLowerCase() : '';
-    
-    // Verifica se o termo de pesquisa está em qualquer parte do título ou descrição
-    return title.includes(query) || description.includes(query);
-  });
+// Chama a função de buscar notícias quando o componente for montado
+onMounted(() => {
+  fetchNoticias(); // Carregar notícias da NewsAPI
+  carregarNoticiasCadastradas(); // Carregar as notícias cadastradas
 });
 </script>
 
@@ -67,9 +99,7 @@ const noticiasFiltradasSaudeMental = computed(() => {
     <!-- Incluindo o Bootstrap -->
   </head>
 
-  <h1 style="margin-top: 4%; text-decoration: underline;">FUTEBOOL</h1>
-
-  <!-- Campo de pesquisa (usando input type="search") -->
+  <!-- Campo de pesquisa -->
   <div class="container mb-4" style="margin-top: 4%;">
     <input 
       v-model="searchQuery" 
@@ -79,42 +109,66 @@ const noticiasFiltradasSaudeMental = computed(() => {
       aria-label="Pesquisar notícias">
   </div>
 
-  <!-- Exibir notícias de Futebol filtradas -->
-  <div v-if="noticiasFiltradasFutebol.length">
-    <div class="card mb-4" style="max-width: 1200px; margin-top: 5%;" v-for="(noticia, index) in noticiasFiltradasFutebol" :key="index">
+  <!-- Exibir notícias publicadas -->
+  <div v-if="noticiasPublicadas.length">
+    <h2 class="centralizado" style="text-decoration: underline;">Notícias Cadastradas</h2>
+    <div class="card mb-4" style="max-width: 1200px; margin-top: 5%;" v-for="(noticia, index) in noticiasPublicadas" :key="index">
       <div class="row g-0">
         <div class="col-md-4">
-          <img :src="noticia.urlToImage" class="img-fluid rounded-start" alt="Imagem da notícia">
+          <img :src="noticia.imagemUrl" class="img-fluid rounded-start" alt="Imagem da notícia" />
         </div>
         <div class="col-md-8">
           <div class="card-body">
-            <h1 class="card-title">{{ noticia.title }}</h1>
-            <p class="card-text">{{ noticia.description }}</p>
+            <h1 class="card-title">{{ noticia.titulo }}</h1>
+            <p class="card-text">{{ noticia.descricao }}</p>
+            <p class="card-text"><small class="text-muted">Publicado em: {{ formatarData(new Date()) }}</small></p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <h1 style="margin-top: 4%; text-decoration: underline;">SAÚDE MENTAL</h1>
+  <!-- Exibir notícias de Futebol Brasileiro filtradas -->
+  <div v-if="noticiasFutebol.length">
+    <h2 class="centralizado" style="text-decoration: underline;">Notícias de Futebol Brasileiro</h2>
+    <div class="card mb-4" style="max-width: 1200px; margin-top: 5%;" v-for="(noticia, index) in noticiasFutebol" :key="index">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img :src="noticia.urlToImage" class="img-fluid rounded-start" alt="Imagem da notícia" />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <a :href="noticia.url" target="_blank">
+              <h1 class="card-title">{{ noticia.title }}</h1>
+            </a>
+            <p class="card-text">{{ noticia.description }}</p>
+            <p class="card-text"><small class="text-muted">Publicado em: {{ formatarData(noticia.publishedAt) }}</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Exibir notícias de Saúde Mental filtradas -->
-  <div v-if="noticiasFiltradasSaudeMental.length">
-    <div class="card mb-4" style="max-width: 1200px; margin: 0 auto;" v-for="(noticia, index) in noticiasFiltradasSaudeMental" :key="index">
+  <div v-if="noticiasSaudeMental.length">
+    <h2 class="centralizado" style="text-decoration: underline; margin-top: 4%;">Notícias de Saúde Mental</h2>
+    <div class="card mb-4" style="max-width: 1200px; margin: 0 auto;" v-for="(noticia, index) in noticiasSaudeMental" :key="index">
       <div class="row g-0">
         <div class="col-md-4">
-          <img :src="noticia.urlToImage" class="img-fluid rounded-start" alt="Imagem da notícia">
+          <img :src="noticia.urlToImage" class="img-fluid rounded-start" alt="Imagem da notícia" />
         </div>
         <div class="col-md-8">
           <div class="card-body">
-            <h1 class="card-title">{{ noticia.title }}</h1>
+            <a :href="noticia.url" target="_blank">
+              <h1 class="card-title">{{ noticia.title }}</h1>
+            </a>
             <p class="card-text">{{ noticia.description }}</p>
+            <p class="card-text"><small class="text-muted">Publicado em: {{ formatarData(noticia.publishedAt) }}</small></p>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 </template>
 
 <style scoped>
@@ -122,12 +176,23 @@ const noticiasFiltradasSaudeMental = computed(() => {
    Estilo Global e Títulos
 ------------------------------ */
 
+/* Centralizando os títulos h1 e h2 */
+.centralizado {
+  text-align: center;
+}
+
 /* Título principal da página */
 h1 {
-  text-align: center;
   font-size: 2.5rem;
   font-weight: bold;
   margin-top: 4%;
+}
+
+/* Estilo dos títulos de seção */
+h2 {
+  font-size: 2rem;
+  margin-top: 2%;
+  margin-bottom: 2%;
 }
 
 /* ------------------------------
@@ -203,6 +268,10 @@ img {
 
   h1 {
     font-size: 2rem; /* Ajuste o tamanho do título em telas menores */
+  }
+
+  h2 {
+    font-size: 1.8rem; /* Ajuste o tamanho do título da seção em telas menores */
   }
 
   .card-body {
