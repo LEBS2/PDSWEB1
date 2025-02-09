@@ -15,4 +15,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  build: {
+    chunkSizeWarningLimit: 1000, // Ajusta o limite para 1 MB, por exemplo
+  }
 })

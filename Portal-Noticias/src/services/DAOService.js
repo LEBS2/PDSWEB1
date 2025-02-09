@@ -6,7 +6,8 @@ class DAOService {
     if (!collectionPath) {
       throw new Error('Collection path must be provided');
     }
-    this.collectionRef = collection(firestore, collectionPath); // Referência à coleção
+    // Referência à coleção no Firestore
+    this.collectionRef = collection(firestore, collectionPath);
   }
 
   // Função para buscar documentos por um campo específico
@@ -27,20 +28,10 @@ class DAOService {
     }
   }
 
-  // Função para inserir um administrador (cadastrar)
+  // Função para inserir um novo documento (cadastrar administrador)
   async insert(object) {
     try {
       const docRef = await addDoc(this.collectionRef, object); // Adiciona documento ao Firestore
-      return docRef.id;
-    } catch (error) {
-      console.error('Erro ao adicionar documento: ', error);
-      throw new Error('Erro ao adicionar documento');
-    }
-  }
-  // Função para inserir um novo documento na coleção
-  async insert(object) {
-    try {
-      const docRef = await addDoc(this.collectionRef, object);
       return docRef.id; // Retorna o ID do novo documento inserido
     } catch (error) {
       console.error('Erro ao adicionar documento: ', error);
@@ -90,7 +81,7 @@ class DAOService {
   // Função para obter um único documento por ID
   async get(id) {
     try {
-      const docRef = doc(firestore, this.collectionRef.path, id);
+      const docRef = doc(firestore, this.collectionRef.path, id); // Referência ao documento
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {

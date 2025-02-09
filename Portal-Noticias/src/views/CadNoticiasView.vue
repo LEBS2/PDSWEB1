@@ -9,6 +9,11 @@ const titulo = ref('')
 const descricao = ref('')
 const imagemUrl = ref('') // Campo para capturar o link da imagem
 
+// Variáveis para personalização
+const fontSize = ref('medium')
+const fontFamily = ref('Arial')
+const textColor = ref('#000000') // Cor inicial preta
+
 // Função para publicar a notícia
 const publicarNoticia = async () => {
   const noticia = {
@@ -55,13 +60,14 @@ const handleEditorInput = () => {
 </script>
 
 <template>
+  <body>
   <div class="container">
     <nav class="navbar">
       <div class="navbar-container">
-        <RouterLink to="/" class="nav-link">Voltar</RouterLink>
+        <RouterLink to="/PaginaInicial" class="nav-link">Voltar</RouterLink>
         <div class="navbar-links">
-          <RouterLink to="/PaginaInicialView" class="nav-link">Início</RouterLink>
-          <RouterLink to="/LoginView" class="nav-link">Sign out</RouterLink>
+          <RouterLink to="/" class="nav-link">Início</RouterLink>
+          <RouterLink to="/login" class="nav-link">Sign out</RouterLink>
         </div>
       </div>
     </nav>
@@ -125,23 +131,30 @@ const handleEditorInput = () => {
       </div>
     </form>
   </div>
+</body>
 </template>
 
 <style scoped>
+*{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: normal !important;
+}
 /* Container principal */
 .container {
-  width: 100%;
   padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f7f7f7;
 }
 
+.nav-link:hover{
+  color: #1557ac;
+  text-decoration: underline;
+}
 /* Navbar */
 .navbar {
   width: 100%;
-  background-color: #004aad;
+  background-color: #f2f2f2;
   padding: 1rem;
 }
 
@@ -152,7 +165,7 @@ const handleEditorInput = () => {
 }
 
 .nav-link {
-  color: white;
+  color: #294e5b;
   text-decoration: none;
   font-size: 1.2rem;
   margin-right: 1rem;
@@ -162,6 +175,14 @@ const handleEditorInput = () => {
   display: flex;
 }
 
+body{
+  background-color: #f2f2f2;
+  width: 101.5%;
+  height: 1500;
+  margin-left: -1%;
+  margin-top: -1%;
+}
+
 /* Formulário */
 .formulario {
   width: 60%;
@@ -169,6 +190,8 @@ const handleEditorInput = () => {
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 5%;
+
 }
 
 .form-section {
@@ -179,21 +202,25 @@ const handleEditorInput = () => {
   font-weight: bold;
   font-size: 1rem;
   margin-bottom: 0.5rem;
+
 }
 
 .form-control {
-  width: 100%;
+  width: 97%;
   padding: 0.8rem;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid hsl(0, 0%, 80%);
   font-size: 1rem;
+  margin-top: 2%;
+
 }
 
 .editor-container {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 1rem;
-  background-color: white;
+  background-color: #294e5b;
+  margin-top: 2%;
 }
 
 .toolbar {
@@ -204,17 +231,18 @@ const handleEditorInput = () => {
 }
 
 .toolbar-btn {
-  background-color: #004aad;
+  background-color: #294e5b;
   color: white;
-  border: none;
+  border: 1px solid white;
   border-radius: 5px;
   padding: 0.5rem 1rem;
   cursor: pointer;
   font-weight: bold;
+  
 }
 
 .toolbar-btn:hover {
-  background-color: #003b8a;
+  background-color: #294e5b;
 }
 
 .toolbar-select {
@@ -222,6 +250,8 @@ const handleEditorInput = () => {
   border-radius: 5px;
   border: 1px solid #ccc;
   cursor: pointer;
+  background-color: #294e5b;
+  color: white;
 }
 
 .toolbar-color {
@@ -236,12 +266,14 @@ const handleEditorInput = () => {
   padding: 1rem;
   outline: none;
   font-size: 1rem;
+  background-color: white;
 }
 
 .form-actions {
   display: flex;
   justify-content: space-between;
   margin-top: 1.5rem;
+  text-decoration: none
 }
 
 .btn {
@@ -253,20 +285,20 @@ const handleEditorInput = () => {
 }
 
 .btn-cancelar {
-  background-color: #f44336;
+  background-color: #bf732f;
   color: white;
-}
-
-.btn-cancelar:hover {
-  background-color: #d32f2f;
+  margin-left: 30%;
+  text-decoration: none;
 }
 
 .btn-publicar {
-  background-color: #4caf50;
+  background-color: #294e5b;
   color: white;
+  margin-left: -170%;
+
 }
 
 .btn-publicar:hover {
-  background-color: #388e3c;
+  background-color: #004AAD;
 }
 </style>

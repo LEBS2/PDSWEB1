@@ -7,6 +7,8 @@ import Cards from '@/components/Cards.vue';
 
 <template>
 
+    <body style="background: #f2f2f2;">
+
     <Header/>
 
     <Cards/>
@@ -15,9 +17,15 @@ import Cards from '@/components/Cards.vue';
     <button type="button" class="btn btn-primary" id="submit-btn2">ADICIONAR NOTÍCIAS</button> 
     </RouterLink>
 
+</body>
+
 </template>
 
 <style scoped>
+
+body{
+    background: #f2f2f2;
+}
 
 #submit-btn2{
     margin-left: 43%;

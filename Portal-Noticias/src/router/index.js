@@ -1,5 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '@/views/HomeView.vue'
+import LoginView from '@/views/LoginView.vue'
+import LoginAdminView from '@/views/LoginAdminView.vue'
+import CadUsuarioView from '@/views/CadUsuarioView.vue'
+import CadAdministradorView from '@/views/CadAdministradorView.vue'
+import CadNoticiasView from '@/views/CadNoticiasView.vue'
+import HomeUsuarioView from '@/views/HomeUsuarioView.vue'
+import PaginaInicialView from '@/views/PaginaInicialView.vue'
+import CatEsportesView from '@/views/CatEsportesView.vue'
+import CatSaudeView from '@/views/CatSaudeView.vue'
+import SobreView from '@/views/SobreView.vue'
+import NoticiaDetalhe from '@/views/NoticiaDetalhe.vue'; // O caminho pode variar
+
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,66 +21,90 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: HomeView
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/LoginView.vue'),
+      component: LoginView
     },
     {
       path: '/loginAdmin',
       name: 'loginAdmin',
-      component: () => import('../views/LoginAdminView.vue'),
+      component: LoginAdminView
     },
     {
       path: '/usuario',
       name: 'usuario',
-      component: () => import('../views/CadUsuarioView.vue'),
+      component: CadUsuarioView
     },
-
     {
       path: '/admin',
       name: 'admin',
-      component: () => import('../views/CadAdministradorView.vue'),
+      component: CadAdministradorView
     },
-
     {
       path: '/noticias',
       name: 'noticias',
-      component: () => import('../views/CadNoticiasView.vue'),
+      component: CadNoticiasView,
+      meta: {requiresAuth: true}
     },
-
     {
       path: '/usuarioHome',
       name: 'usuarioHome',
-      component: () => import('../views/HomeUsuarioView.vue'),
+      component: HomeUsuarioView,
+      meta: {requiresAuth: true}
     },
-
     {
       path: '/PaginaInicial',
       name: 'PaginaInicial',
-      component: () => import('../views/PaginaInicialView.vue'),
+      component: PaginaInicialView,
+      meta: {requiresAuth: true}
     },
-
     {
       path: '/esporte',
       name: 'esporte',
-      component: () => import('../views/CatEsportesView.vue'),
-    },
+      component: CatEsportesView,
+      meta: {requiresAuth: true}
 
+    },
     {
       path: '/saude',
       name: 'saude',
-      component: () => import('../views/CatSaudeView.vue'),
-    },
+      component: CatSaudeView,
+      meta: {requiresAuth: true}
 
+    },
     {
       path: '/sobre',
       name: 'sobre',
-      component: () => import('../views/SobreView.vue'),
-    }
-  ],
+      component: SobreView
+    },
+    
+    {
+      path: '/noticia/:id',
+      name: 'noticiaDetalhe',
+      component: NoticiaDetalhe,
+    },
+
+  ]
+})
+
+router.beforeEach((to, from, next) => {
+  const auth = getAuth();
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  if (requiresAuth) {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        next(); 
+      } else {
+        next('/loginAdmin'); 
+      }
+    });
+  } else {
+    next(); 
+  }
 })
 
 export default router

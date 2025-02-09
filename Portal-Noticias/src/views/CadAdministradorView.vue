@@ -44,7 +44,7 @@ const addAdmin = async () => {
 
     <form class="formulario">
 
-        <img id="logoImage" src="../assets/LogoBoasNovas.png" alt="Logo">
+        <img id="logoImage" src="../assets/1.png" alt="Logo">
 
         <div class="mb-3">
             <label for="nome" class="form-label">Nome completo</label>
@@ -88,109 +88,114 @@ const addAdmin = async () => {
 </template>
 
 <style scoped>
+   body {
+      background-color: #f2f2f2 !important;
+  }
 
-body {
-  background-image: url('@/assets/imgFundoAdmin.jpg');
-}
+  .formulario {
+      width: 40%;
+      height: 800px;
+      border: 1px solid black !important;
+      border-radius: 5px;
+      margin-left: 32%;
+      margin-top: -16%;
+      margin-bottom: 5%;
+      background-color: #f2f2f2;
+      border: #f2f2f2;
+  }
+  
+  #imagemSelecionada {
+      height: 60px;
+  }
+  
+  img {
+      width: 45%;
+      height: 250px;
+      margin-left: 28%;
+      margin-top: 5%;
+  }
+  
+  .form-label {
+      margin-left: 12%;
+      color: #030E43;
+      margin-top: 2%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+  }
+  
+  .form-control {
+    background-color: #f2f2f2;
+      margin-left: 12%;
+      width: 75%;
+      height: 60px;
+      border: 1px solid black;
+      border-radius: 5px;
+      margin-top: 2%;
+  }
+  
+  .mb-4 {
+      margin-right: 20%;
+      margin-top: 2%;
+  }
 
-.formulario{
-    width: 50%;
-    height: 730px;
-    border: 1px solid #030E43;
-    border-radius: 5px;
-    margin-left: 25%;
-    margin-top: -10%;
-    margin-bottom: 5%;
-    background-color: white;
-    border: white;
-}
-
-#imagemSelecionada{
-    height: 60px;
-}
-
-img{
-    width: 35%;
-    height: 190px;
-    margin-left: 33%;
-    margin-top: 7%;
-}
-
-.form-label{
-    margin-left: 12%;
-    color: #030E43;
-    margin-top: 2%;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-}
-
-.form-control{
-    margin-left: 12%;
-    width: 75%;
-    height: 60px;
-    border: 1px solid #030E43;
-    border-radius: 5px;
-    
-}
-
-.mb-4{
-    margin-right: 20%;
-    margin-top: 2%;
-}
-
-.form-text{
-    margin-left: 25%;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-}
-
-.btn-primary{
-    margin-left: 16%;
-    background-color: #030E43;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-    width: 30%;
-    height: 50px;
-    border: #030E43;
-    margin-top: 2%;
-}
-
-#submit-btn2{
-    margin-left: 49%;
-    margin-top: -11.5%;
-    background-color: #D93939;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-    width: 30%;
-    height: 50px;
-    border: #D93939;
-}
-
-#UploadArquivos{
-    width: 20%;
-    height: 55px;
-    left: 7%;
-    margin-top: 12.75%;
-    position: absolute;
-    
-}
-
-.container-fluid{
-    text-decoration: underline;
-    color: #030E43;
-    margin-top: 0%;
-    
-}
-
-.form-text{
-    margin-left: 65%;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-    color: #030E43;
-}
-
-.form-text:hover{
-    color: blue;
-}
-
-</style>
+  .mb-3 {
+      margin-top: 2%;
+  }
+  
+  .form-text {
+      margin-left: 25%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+  }
+  
+  .btn-primary {
+      margin-left: 18%;
+      background-color: #294e5b;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+      font-size: 16px;
+      width: 30%;
+      height: 60px;
+      border-radius: 0.5cap;
+      border: 1px solid #294e5b;
+      margin-top: 3%;
+  }
+  
+  #submit-btn2 {
+    margin-left: 5%;
+      background-color: #bf732f;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+      font-size: 16px;
+      width: 30%;
+      height: 60px;
+      border-radius: 0.5cap;
+      border: 1px solid #bf732f;
+      margin-top: 3%;
+  }
+  
+  #UploadArquivos {
+      width: 20%;
+      height: 55px;
+      left: 7%;
+      margin-top: 12.75%;
+      position: absolute;
+  }
+  
+  .container-fluid {
+      text-decoration: underline;
+      color: #030E43;
+      margin-top: 0%;
+  }
+  
+  .form-text {
+      margin-left: 65%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+      color: #030E43;
+  }
+  
+  .form-text:hover {
+      color: blue;
+  }
+  </style>

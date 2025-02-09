@@ -1,14 +1,24 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import DAOService from '@/services/DAOService'; // Importando o DAOService
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'; // Importando Firebase Auth
+import DAOService from '@/services/DAOService'; // Sua DAOService configurada
+import { getDocs, collection } from 'firebase/firestore';  // Importando funções do Firestore
+import { firestore } from '@/firebase'; // Importando o Firestore
 
-const dbService = new DAOService('administrador'); // Coleção 'administrador'
 const email = ref('');
 const senha = ref('');
 const router = useRouter();
+const auth = getAuth(); // Instanciando o Firebase Auth
+const dbService = new DAOService('administrador'); // Coleção 'administrador'
 
-// Função para autenticar o administrador
+// Função para validar o formato do e-mail
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+// Função para autenticar o administrador e registrar no Firebase Auth
 const loginAdmin = async () => {
   try {
     // Validação para verificar se os campos estão preenchidos
@@ -17,25 +27,56 @@ const loginAdmin = async () => {
       return;
     }
 
-    // Buscar administrador pelo e-mail no Firestore
-    const querySnapshot = await dbService.search('email', email.value);
-
-    // Se o e-mail não for encontrado
-    if (querySnapshot.length === 0) {
-      alert("E-mail não encontrado.");
+    // Validação do formato do e-mail
+    if (!validateEmail(email.value)) {
+      alert("E-mail inválido!");
       return;
     }
 
-    const admin = querySnapshot[0]; // Pega o primeiro resultado
+    console.log("Tentando autenticar com o e-mail:", email.value); // Verificando as credenciais
 
-    // Verificando a senha
-    if (admin.senha === senha.value) {
+    // Certifique-se de que os valores de e-mail e senha são válidos
+    if (email.value.trim() === '' || senha.value.trim() === '') {
+      alert('Por favor, preencha o e-mail e a senha corretamente.');
+      return;
+    }
+
+    // Autenticação no Firebase Auth
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email.value, senha.value);
+      const user = userCredential.user;
+
+      console.log('Usuário autenticado no Firebase Auth:', user); // Verificando o retorno do Firebase Auth
+
+      // Agora, buscar o administrador no Firestore para verificar se existe
+      const querySnapshot = await dbService.search('email', email.value);
+      if (querySnapshot.length === 0) {
+        alert("E-mail não encontrado.");
+        return;
+      }
+
+      const admin = querySnapshot[0]; // Pega o primeiro resultado do Firestore
+
+      // Registrar a atividade de login no Firestore (opcional, para registrar o login)
+      await dbService.update(admin.id, {
+        ultima_autenticacao: new Date().toISOString(), // Registrando a data da última autenticação
+      });
+
       alert("Login bem-sucedido!");
       router.push("/PaginaInicial"); // Redireciona após login bem-sucedido
-    } else {
-      alert("Senha incorreta.");
+    } catch (error) {
+      // Se a autenticação no Firebase Auth falhar, capturamos o erro
+      console.error("Erro ao autenticar no Firebase Auth:", error.message); // Exibe mensagem do erro
+      if (error.code === 'auth/invalid-email') {
+        alert("O e-mail fornecido é inválido.");
+      } else if (error.code === 'auth/wrong-password') {
+        alert("A senha está incorreta.");
+      } else {
+        alert("Erro de autenticação. Tente novamente.");
+      }
     }
   } catch (error) {
+    // Caso ocorra algum erro inesperado
     console.error("Erro ao tentar autenticar:", error);
     alert("Erro ao tentar fazer login. Tente novamente.");
   }
@@ -43,65 +84,58 @@ const loginAdmin = async () => {
 </script>
 
 <template>
-    <!DOCTYPE html>
-    <html lang="pt-BR">
-  
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Login de Administrador</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    </head>
-  
-    <body>
-  
-        <img class style="visibility: hidden;" src="@/assets/imgFundoAdmin.jpg">
-  
-        <form class="formulario">
-            <img id="logoImage" src="../assets/LogoBoasNovas.png" alt="Logo">
-  
-            <!-- Campo de E-mail -->
-            <div class="mb-3">
-                <label for="email" class="form-label">E-mail</label>
-                <input type="email" class="form-control" id="email" name="email" v-model="email" required aria-describedby="nameHelp">
-                <div class="invalid-feedback">
-                    Campo obrigatório.
-                </div>
-            </div>
-  
-            <!-- Campo de Senha -->
-            <div class="mb-3">
-                <label for="senha" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="senha" name="senha" v-model="senha" required aria-describedby="nameHelp">
-            </div>
-  
-            <a style="margin-left: 65%; font-size: 14px;" href="#">Esqueceu a senha?</a>
-  
-            <!-- Botão Entrar -->
-            <button type="button" @click="loginAdmin" class="btn btn-primary" id="submit-btn">ENTRAR</button>
-  
-            <!-- Botão Cancelar -->
-            <RouterLink to="/">
-                <button type="button" class="btn btn-primary" id="submit-btn2">CANCELAR</button>
-            </RouterLink>
-        </form>
-  
-    </body>
-    </html>
-  </template>
+
+  <body>
+  <form class="formulario">
+    <img id="logoImage" src="../assets/1.png" alt="Logo">
+
+    <!-- Campo de E-mail -->
+    <div class="mb-3">
+      <label for="email" class="form-label">E-mail</label>
+      <input type="email" class="form-control" id="email" name="email" v-model="email" required aria-describedby="nameHelp">
+     
+    </div>
+
+    <!-- Campo de Senha -->
+    <div class="mb-3">
+      <label for="senha" class="form-label">Senha</label>
+      <input type="password" class="form-control" id="senha" name="senha" v-model="senha" required aria-describedby="nameHelp">
+    </div>
+
+    <a style="color: #294e5b;margin-left: 69.5%; font-size: 15px; text-decoration: none; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;" href="#">Esqueceu a senha?</a>
+
+    <!-- Botão Entrar -->
+    <button type="button" @click="loginAdmin" class="btn btn-primary" id="submit-btn">ENTRAR</button>
+
+    <!-- Botão Cancelar -->
+    <RouterLink to="/">
+      <button type="button" class="btn btn-primary" id="submit-btn2">CANCELAR</button>
+    </RouterLink>
+  </form>
+</body>
+
+</template>
   
   <style scoped>
+   body {
+      background-color: #f2f2f2 !important;
+      width: 110% !important;
+      height: 800px;
+      margin-top: -2%;
+      display: flex;
+      margin-left: -1%;
+  }
+
   .formulario {
       width: 50%;
-      height: 600px;
-      border: 1px solid #030E43 !important;
+      height: 660px;
+      border: 1px solid black !important;
       border-radius: 5px;
       margin-left: 25%;
-      margin-top: -10%;
+      margin-top: 6%;
       margin-bottom: 5%;
-      background-color: white;
-      border: white;
+      background-color: #f2f2f2;
+      border: #f2f2f2;
   }
   
   #imagemSelecionada {
@@ -109,10 +143,10 @@ const loginAdmin = async () => {
   }
   
   img {
-      width: 35%;
-      height: 190px;
-      margin-left: 33%;
-      margin-top: 7%;
+      width: 45%;
+      height: 250px;
+      margin-left: 28%;
+      margin-top: 5%;
   }
   
   .form-label {
@@ -124,15 +158,21 @@ const loginAdmin = async () => {
   }
   
   .form-control {
+    background-color: #f2f2f2;
       margin-left: 12%;
       width: 75%;
       height: 60px;
-      border: 1px solid #030E43;
+      border: 1px solid black;
       border-radius: 5px;
+      margin-top: 2%;
   }
   
   .mb-4 {
       margin-right: 20%;
+      margin-top: 2%;
+  }
+
+  .mb-3 {
       margin-top: 2%;
   }
   
@@ -144,24 +184,28 @@ const loginAdmin = async () => {
   
   .btn-primary {
       margin-left: 18%;
-      background-color: #030E43;
+      background-color: #294e5b;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       font-weight: normal;
+      font-size: 16px;
       width: 30%;
-      height: 50px;
-      border: #030E43;
-      margin-top: 2%;
+      height: 60px;
+      border-radius: 0.5cap;
+      border: 1px solid #294e5b;
+      margin-top: 4%;
   }
   
   #submit-btn2 {
-      margin-left: 51%;
-      margin-top: -11.5%;
-      background-color: #D93939;
+    margin-left: 5%;
+      background-color: #bf732f;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       font-weight: normal;
+      font-size: 16px;
       width: 30%;
-      height: 50px;
-      border: #D93939;
+      height: 60px;
+      border-radius: 0.5cap;
+      border: 1px solid #bf732f;
+      margin-top: 2%;
   }
   
   #UploadArquivos {

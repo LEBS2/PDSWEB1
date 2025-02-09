@@ -49,7 +49,7 @@ const addUser = async () => {
 
     <div class="formulario">
 
-        <img id="logoImage" src="../assets/LogoBoasNovas.png" alt="Logo">
+        <img id="logoImage" src="../assets/1.png" alt="Logo">
 
         <div class="mb-3">
             <label for="nome" class="form-label">Nome completo</label>
@@ -170,86 +170,116 @@ const addUser = async () => {
 </template>
 
 <style scoped>
+ body {
+      background-color: #f2f2f2 !important;
+      height: 2500px;
+      display: flex;
+  }
 
-.formulario{
-    width: 50%;
-    height: 730px;
-    margin-left: 20%;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    background-color: white;
+  .formulario {
+      width: 60%;
+      height: 1800px;
+      border: 1px solid black !important;
+      border-radius: 5px;
+      margin-left: 22%;
+      margin-top: 7%;
+      margin-bottom: 5%;
+      background-color: #f2f2f2;
+      border: #f2f2f2;
 
-}
+  }
+  
+  #imagemSelecionada {
+      height: 60px;
+  }
+  
+  img {
+      width: 45%;
+      height: 250px;
+      margin-left: 28%;
+      margin-top: 5%;
+  }
+  
+  .form-label {
+      margin-left: 12%;
+      color: #030E43;
+      margin-top: 2%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+  }
+  
+  .form-control {
+    background-color: #f2f2f2;
+      margin-left: 12%;
+      width: 75%;
+      height: 60px;
+      border: 1px solid black;
+      border-radius: 5px;
+      margin-top: 2%;
+  }
+  
+  .mb-4 {
+      margin-right: 20%;
+      margin-top: 2%;
+  }
 
-#imagemSelecionada{
-    height: 60px;
-}
-
-img{
-    width: 42%;
-    height: 250px;
-    margin-left: 40%;
-    margin-top: -5%;
-}
-
-.form-label{
-    margin-right: 32%;
-    color: #004AAD;
-    margin-top: 2%;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-}
-
-.form-control{
-    margin-right: 32%;
-    width: 125%;
-    height: 60px;
-    border: 1px solid #004AAD;
-    border-radius: 5px;
-    
-}
-
-.mb-4{
-    margin-right: 20%;
-    margin-top: 2%;
-}
-
-.form-text{
-    margin-left: 25%;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-}
-
-.btn-primary{
-    margin-left: 18%;
-    background-color: #004AAD;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-    width: 40%;
-    height: 65px;
-    border: #004AAD;
-    margin-top: 5%;
-}
-
-#submit-btn2{
-    margin-left: 63%;
-    margin-top: -13%;
-    background-color: #D93939;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-    width: 40%;
-    height: 65px;
-    border: #D93939;
-}
-
-#UploadArquivos{
-    width: 20%;
-    height: 55px;
-    left: 7%;
-    margin-top: 12.75%;
-    position: absolute;
-    
-}
+  .mb-3 {
+      margin-top: 2%;
+  }
+  
+  .form-text {
+      margin-left: 25%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+  }
+  
+  .btn-primary {
+      margin-left: 18%;
+      background-color: #294e5b;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+      font-size: 16px;
+      width: 30%;
+      height: 60px;
+      border-radius: 0.5cap;
+      border: 1px solid #294e5b;
+      margin-top: 3%;
+  }
+  
+  #submit-btn2 {
+    margin-left: 5%;
+      background-color: #bf732f;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+      font-size: 16px;
+      width: 30%;
+      height: 60px;
+      border-radius: 0.5cap;
+      border: 1px solid #bf732f;
+      margin-top: 3%;
+  }
+  
+  #UploadArquivos {
+      width: 20%;
+      height: 55px;
+      left: 7%;
+      margin-top: 12.75%;
+      position: absolute;
+  }
+  
+  .container-fluid {
+      text-decoration: underline;
+      color: #030E43;
+      margin-top: 0%;
+  }
+  
+  .form-text {
+      margin-left: 65%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+      color: #030E43;
+  }
+  
 
 .container-fluid{
     text-decoration: underline;
@@ -267,11 +297,11 @@ img{
 
 #descricaoTXT {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    margin-right: 20%;
+    margin-left: 12%;
     padding: 2px;
-    background-color: #07A7F1;
-    color: #07A7F1;
-    width: 125%;
+    background-color: #bf732f;
+    color: #bf732f;
+    width: 75%;
 }
 
 .editor-container {
@@ -286,22 +316,21 @@ img{
     margin-bottom: 10px;
 }
 
-
 #editor {
     min-height: 20px;
     border: 1px solid #ccc;
     padding: 10px;
     border: none;
-    margin-left: 37%;
+    margin-left: 33%;
 }
 
 #FormasPagamentos {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    margin-right: 20%;
+    margin-left: 12%;
     padding: 2px;
-    background-color: #004AAD;
-    color: #004AAD;
-    width: 125%;
+    background-color: #294e5b;
+    color: #294e5b;
+    width: 75%;
 }
 
 .editor-container {
@@ -319,7 +348,7 @@ img{
 
 #cartao {
     min-height: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #294e5b;
     padding: 10px;
     overflow-y: auto;
     outline: none; /* Remove outline ao focar */
@@ -331,11 +360,13 @@ img{
     width: 10%;
     height: 30px;
     margin-left: 0%;
+    margin-top: -7%;
 }
 
 #numeroCartao{
     width: 76%;
     margin-left: 12%;
+    background-color: white;
 }
 
 </style>

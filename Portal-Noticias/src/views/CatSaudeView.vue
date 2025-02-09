@@ -94,7 +94,7 @@ const noticiasFiltradas = computed(() => {
             </RouterLink>
           </form>
         </div>
-        <img id="logoImage" src="../assets/LogoBoasNovas.png" alt="Logo">
+        <img id="logoImage" src="../assets/1.png" alt="Logo">
       </nav>    
 
       <nav style="background-color: #356AAF !important; height: 94px; margin-top: -2%" class="navbar bg-body-tertiary">

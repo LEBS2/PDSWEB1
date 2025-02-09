@@ -43,13 +43,13 @@ import { RouterLink, RouterView } from 'vue-router'
         </form>
       
         </div>
-        <img style="visibility: hidden;" id="logoImage" src="../assets/LogoBoasNovas.png" alt="Logo">
+        <img style="visibility: hidden;" id="logoImage" src="../assets/1.png" alt="Logo">
         
       </nav>    
 
     <div class="formulario">
 
-        <img id="logoImage" src="../assets/LogoBoasNovas.png" alt="Logo">
+        <img id="logoImage" src="../assets/1.png" alt="Logo">
 
         <h1 style="margin-left: 4%; margin-top: 3%;">SOBRE NÓS</h1>
 
@@ -148,7 +148,5 @@ informações sobre esportes, economia e saúde. </p>
     margin-left: 18%;
     margin-top: 5%;
 }
-
-
 
 </style>

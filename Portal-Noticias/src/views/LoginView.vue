@@ -1,206 +1,303 @@
 <script setup>
 import { ref } from 'vue';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 
 const email = ref('');
 const senha = ref('');
+const emailValido = ref(true); // Validação de e-mail
+const senhaValida = ref(true); // Validação de senha
+const camposPreenchidos = ref(true); // Verificação de campos vazios
+const erroEmailBloqueado = ref(''); // Mensagem de erro para e-mails bloqueados
+const emailBloqueado = new Set(['adrilysilva@gmail.com']); // Lista de e-mails bloqueados
 const router = useRouter();
 
-const autenticar = async () => {
-  const auth = getAuth();
+const autenticar = async (e) => {
+  e.preventDefault(); // Previne o comportamento de submit padrão do formulário
   
+  // Resetar as validações anteriores
+  emailValido.value = true;
+  senhaValida.value = true;
+  camposPreenchidos.value = true;
+  erroEmailBloqueado.value = ''; // Reseta a mensagem de erro
+  
+  // Verificar se os campos estão vazios
+  if (!email.value || !senha.value) {
+    camposPreenchidos.value = false;
+    alert("Todos os campos devem ser preenchidos.");
+    return;
+  }
+  
+  // Validar o formato do e-mail
+  const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!regexEmail.test(email.value)) {
+    emailValido.value = false;
+    alert("Por favor, insira um e-mail válido.");
+    return;
+  }
+  
+  // Impedir a autenticação com e-mails bloqueados
+  if (emailBloqueado.has(email.value)) {
+    erroEmailBloqueado.value = `O e-mail ${email.value} não pode ser utilizado para login.`;
+    return; // Interrompe o processo de login
+  }
+
+  // Validar a senha (exemplo: deve ter pelo menos 6 caracteres)
+  if (senha.value.length < 6) {
+    senhaValida.value = false;
+    alert("A senha deve ter pelo menos 6 caracteres.");
+    return;
+  }
+
+  const auth = getAuth();
+
   try {
-    // Tentando autenticar com email e senha
+    // Tentando autenticar com e-mail e senha
     const userCredential = await signInWithEmailAndPassword(auth, email.value, senha.value);
     const user = userCredential.user;
     alert("Usuário autenticado com sucesso!");
+
     // Redireciona para a página home após login bem-sucedido
-    router.push('/home');
+    router.push('/usuarioHome');
   } catch (error) {
-    alert("Erro ao autenticar: " + error.message); // Exibe erro, se houver
+    // Exibe o erro caso falhe
+    console.error("Erro ao autenticar:", error);
+    let mensagemErro = "Erro ao autenticar. Tente novamente.";
+    if (error.code === 'auth/invalid-email') {
+      mensagemErro = "E-mail inválido.";
+    } else if (error.code === 'auth/wrong-password') {
+      mensagemErro = "Senha incorreta.";
+    } else if (error.code === 'auth/user-not-found') {
+      mensagemErro = "Usuário não encontrado.";
+    }
+    alert(mensagemErro);
   }
 };
+
+// Função para login com o Google
+const loginComGoogle = async () => {
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
+  
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    alert(`Usuário autenticado com sucesso! Bem-vindo ${user.displayName}`);
+    
+    // Redireciona para a página home após login bem-sucedido
+    router.push('/usuarioHome');
+  } catch (error) {
+    console.error("Erro ao autenticar com Google:", error);
+    alert("Erro ao autenticar com Google. Tente novamente.");
+  }
+};
+
+// Função para login com o Facebook
+const loginComFacebook = async () => {
+  const auth = getAuth();
+  const provider = new FacebookAuthProvider();
+
+  try {
+    console.log("Tentando autenticar com o Facebook...");
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    console.log("Usuário autenticado com sucesso!", user);
+    alert(`Usuário autenticado com sucesso! Bem-vindo ${user.displayName}`);
+    
+    // Redireciona para a página home após login bem-sucedido
+    router.push('/usuarioHome');
+  } catch (error) {
+    console.error("Erro ao autenticar com Facebook:", error);
+    alert("Erro ao autenticar com Facebook. Tente novamente.");
+  }
+};
+
 </script>
 
 <template>
+  <body>
+  <form class="formulario" @submit="autenticar">
+    <img id="logoImage" src="../assets/1.png" alt="Logo">
 
-<!Doctype html>
-<html lang="en">
+    <div class="mb-3">
+      <label for="email" class="form-label">E-mail</label>
+      <input 
+        type="email" 
+        class="form-control" 
+        id="email" 
+        name="email" 
+        v-model="email" 
+        required 
+        :class="{'is-invalid': !emailValido}"
+        aria-describedby="nameHelp"/>
+    
+    </div>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
+    <div class="mb-3">
+      <label for="senha" class="form-label">Senha</label>
+      <input 
+        type="password" 
+        class="form-control" 
+        id="senha" 
+        name="senha" 
+        v-model="senha" 
+        required
+        :class="{'is-invalid': !senhaValida}"
+      />
 
-<body>
+    </div>
 
-    <form class="formulario">
+    <!-- Exibição de erro de e-mail bloqueado -->
+    <div v-if="erroEmailBloqueado" class="alert alert-danger">
+      {{ erroEmailBloqueado }}
+    </div>
 
-        <img id="logoImage" src="../assets/LogoBoasNovas.png" alt="Logo">
+    <div v-if="!camposPreenchidos" class="alert alert-danger">
+      Todos os campos devem ser preenchidos.
+    </div>
 
-        <div class="mb-3">
-            <label for="email" class="form-label">E-mail</label>
-            <input type="email" class="form-control" id="email" name="email" required aria-describedby="nameHelp">
-            <div class="invalid-feedback">
-                Campo obrigatório.
-            </div>
-        </div>
+    <button type="submit" class="btn btn-primary" id="submit-btn">CONTINUAR</button>
 
-        <button type="submit" class="btn btn-primary" id="submit-btn">CONTINUAR</button>
-        <div id="nameHelp" class="form-text">Não tem conta?  <RouterLink to="/usuario"><u>Crie sua conta</u></RouterLink></div>
+    <div id="nameHelp" class="form-text">
+      Não tem conta? <RouterLink to="/usuario"><u>Crie sua conta</u></RouterLink>
+    </div>
 
-        <hr class="linha1"> <hr class="linha2">
+    <hr class="linha1"> 
+    <p class="paragrafo">OU</p>
 
-        <p class="paragrafo">OU</p>
+    <!-- Botões de login com Google e Facebook -->
+    <button type="button" class="btn btn-primary" style="margin-top: 2%; background-color: white; border: 1px solid #294e5b; color: #294e5b;" @click="loginComGoogle">
+      Continuar com o <b>Google</b>
 
-        <button type="submit" class="btn btn-primary" id="submit-btn2">Continuar com o <b>facebook</b></button>
+    </button>
 
-        <img class="facebook" src="../assets/ícone-do-logotipo-de-facebook.webp">
-        
-        <button type="submit" class="btn btn-primary" id="submit-btn2">Continuar com o <b>Google</b></button>
+    <img class="facebook" src="../assets/google.jpg" alt="Google logo">
 
-        <img class="facebook" src="../assets/google.jpg">
-        
-        <button type="submit" class="btn btn-primary" id="submit-btn2">Continuar com o <b>Apple</b></button>
 
-        <img class="facebook" src="../assets/apple_logo_icon.webp">
-       
-    </form>
-
+  </form>
 </body>
-
-</html>
- 
 </template>
 
 <style scoped>
+   body {
+      background-color: #f2f2f2 !important;
+      width: 101% !important;
+      height: 1500px;
+      margin-top: -2%;
+      display: flex;
+      margin-left: -1%;
+  }
 
-.formulario{
-    width: 50%;
-    height: 895px;
-    border: 1px solid #030E43;
-    border-radius: 5px;
-    margin-left: 25%;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    
-}
+  .formulario {
+      width: 50%;
+      height: 850px;
+      border: 1px solid black !important;
+      border-radius: 5px;
+      margin-left: 25%;
+      margin-top: 6%;
+      margin-bottom: 5%;
+      background-color: #f2f2f2;
+      border: #f2f2f2;
+  }
+  
+  #imagemSelecionada {
+      height: 60px;
+  }
+  
+  img {
+      width: 45%;
+      height: 250px;
+      margin-left: 28%;
+      margin-top: 5%;
+  }
+  
+  .form-label {
+      margin-left: 12%;
+      color: #030E43;
+      margin-top: 2%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+  }
+  
+  .form-control {
+    background-color: #f2f2f2;
+      margin-left: 12%;
+      width: 75%;
+      height: 60px;
+      border: 1px solid black;
+      border-radius: 5px;
+      margin-top: 2%;
+  }
+  
+  .mb-4 {
+      margin-right: 20%;
+      margin-top: 2%;
+  }
 
-#imagemSelecionada{
-    height: 60px;
-}
+  .mb-3 {
+      margin-top: 2%;
+  }
+  
+  .form-text {
+      margin-left: 25%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+  }
+  
+  .btn-primary {
+      margin-left: 30%;
+      background-color: #294e5b;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+      font-size: 16px;
+      width: 40%;
+      height: 65px;
+      border-radius: 0.5cap;
+      border: 1px solid #294e5b;
+      margin-top: 4%;
+      color: white;
+  }
+  
+  #UploadArquivos {
+      width: 20%;
+      height: 55px;
+      left: 7%;
+      margin-top: 12.75%;
+      position: absolute;
+  }
+  
+  .container-fluid {
+      text-decoration: underline;
+      color: #030E43;
+      margin-top: 0%;
+  }
+  
+  .form-text {
+      margin-left: 35%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: normal;
+      color: #030E43;
+      margin-top: 2%;
+  }
 
-img{
-    width: 35%;
-    height: 250px;
-    margin-left: 33%;
-    margin-top: 4%;
-}
-
-.form-label{
-    margin-left: 12%;
-    color: #030E43;
-    margin-top: -2%;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-}
-
-.form-control{
-    margin-left: 12%;
-    width: 75%;
-    height: 60px;
-    border: 1px solid #030E43;
-    border-radius: 5px;
-    
-}
-
-.mb-4{
-    margin-right: 20%;
-    margin-top: 2%;
-}
-
-.form-text{
-    margin-left: 32.75% !important;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-    margin-top: 2%;
-    font-size: 16px;
-}
-
-.btn-primary{
-    margin-left: 34%;
-    background-color: #356FB5;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-    width: 30%;
-    height: 50px;
-    border: #030E43;
-    margin-top: 2%;
-}
-
-#submit-btn2{
-    margin-left: 22%;
-    margin-top: 2.5%;
-    background-color: white;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-    width: 55%;
-    height: 60px;
-    border: 1px solid #030E43;
-    color: #030E43;
-}
-
-#UploadArquivos{
-    width: 20%;
-    height: 55px;
-    left: 7%;
-    margin-top: 12.75%;
-    position: absolute;
-    
-}
-
-.container-fluid{
-    text-decoration: underline;
-    color: #030E43;
-    margin-top: 0%;
-    
-}
-
-.form-text{
-    margin-left: 65%;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: normal;
-    color: #030E43;
+.facebook {
+  width: 5%;
+  height: 35px;
+  margin-left: 31%;
+  margin-top: -7.5%;
+  text-align: center;
+  display:flex;
 }
 
 .linha1{
-    width: 32%;
-    margin-left: 12%;
-    margin-top: 5%;
-}
-
-.linha2{
-    width: 32%;
-    margin-left: 55%;
-    margin-top: -2.5%;
+  width: 75%;
+  margin-top: 5%;
 }
 
 .paragrafo{
-    margin-left: 47.75%;
-    margin-top: -4%;
-    text-align: justify;
-}
+  margin-left: 47%;
+  margin-top: 5%;
 
-.facebook{
-    width: 5%;
-    height: 35px;
-    margin-left: 26.5%;
-    margin-top: -13%;
-    text-align: center;
-}
 
+}
 </style>
