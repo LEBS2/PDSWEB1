@@ -166,6 +166,11 @@ onMounted(() => {
 });
 
 const editarNoticia = (noticia) => {
+  if (this.usuarioPerfil === 'administrador') {
+      // Lógica para editar a notícia
+    } else {
+      alert("Você não tem permissão para editar.");
+    }
   // Preenche as variáveis com os dados da notícia selecionada para edição
   titulo.value = noticia.titulo;
   descricao.value = noticia.descricao;
@@ -198,42 +203,46 @@ const editarNoticia = (noticia) => {
         style="border-radius: 30px; padding: 15px; background-color: #fff; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
     </div>
 
-    <!-- Notícias publicadas -->
-    <div v-if="noticiasFiltradas.noticiasFiltradasPublicadas.length">
-      <h2 class="centralizado" style="text-decoration: none; font-size: 2.5rem; font-weight: bold;">Publicações</h2>
+   <!-- Notícias publicadas -->
+<div v-if="noticiasFiltradas.noticiasFiltradasPublicadas.length">
+  <h2 class="centralizado" style="text-decoration: none; font-size: 2.5rem; font-weight: bold;">Publicações</h2>
 
-      <div class="card mb-4" style="height: 275px; width:27%; margin: 25px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); background-color: #294e5b; display: flex; margin-left: 18%;" v-for="(noticia, index) in noticiasFiltradas.noticiasFiltradasPublicadas" :key="index">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img :src="noticia.imagemUrl || '/path/to/default-image.jpg'" class="img-fluid rounded-start" alt="Imagem da notícia" style="border-radius: 8px; margin-top: 2.5%; width: 1500%; margin-left: 4%; display: flex;">
-          </div>
+  <div 
+    class="card mb-4" 
+    style="height: 275px; width:27%; margin: 25px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); background-color: #294e5b; display: flex; margin-left: 18%;" 
+    v-for="(noticia, index) in noticiasFiltradas.noticiasFiltradasPublicadas" :key="index">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img :src="noticia.imagemUrl || '/path/to/default-image.jpg'" class="img-fluid rounded-start" alt="Imagem da notícia" style="border-radius: 8px; margin-top: 2.5%; width: 1500%; margin-left: 4%; display: flex;">
+      </div>
 
-          <div class="col-md-8">
-            <div class="card-body">
-              <h3 
-                class="card-title" 
-                v-html="destacarPalavraChave(noticia.titulo)" 
-                @click="navegarParaDetalhes(noticia.id)" 
-                style="cursor: pointer; color: #007bff; font-size: 1.8rem; font-weight: bold; line-height: 1.5;">
-              </h3>
-              <p class="card-text" v-html="destacarPalavraChave(noticia.descricao)" style="font-size: 1rem; color: #555;"></p>
-              <p class="card-text"><small class="text-muted">Publicado em: {{ formatarData(new Date()) }}</small></p>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h3 
+            class="card-title" 
+            v-html="destacarPalavraChave(noticia.titulo)" 
+            @click="navegarParaDetalhes(noticia.id)" 
+            style="cursor: pointer; color: #007bff; font-size: 1.8rem; font-weight: bold; line-height: 1.5;">
+          </h3>
+          <p class="card-text" v-html="destacarPalavraChave(noticia.descricao)" style="font-size: 1rem; color: #555;"></p>
+          <p class="card-text"><small class="text-muted">Publicado em: {{ formatarData(new Date()) }}</small></p>
 
-              <!-- Ícones de edição e remoção -->
-              <div class="d-flex align-items-center">
-                <a @click="editarNoticia(noticia)" class="text-warning me-3" style="cursor: pointer; font-size: 1.3rem;" title="Editar">
-                  <i class="fas fa-edit"></i>
-                </a>
+          <!-- Ícones de edição e remoção -->
+          <div class="d-flex align-items-center">
+            <a @click="editarNoticia(noticia)" class="icone-editar me-3" style="cursor: pointer; font-size: 1.3rem;" title="Editar">
+              <i class="fas fa-edit"></i>
+            </a>
 
-                <a @click="removerNoticia(noticia.id)" class="text-danger" style="cursor: pointer; font-size: 1.3rem;" title="Remover">
-                  <i class="fas fa-trash-alt"></i>
-                </a>
-              </div>
-            </div>
+            <a @click="removerNoticia(noticia.id)" class="icone-remover" style="cursor: pointer; font-size: 1.3rem;" title="Remover">
+              <i class="fas fa-trash-alt"></i>
+            </a>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
 
    <!-- Exibir notícias de Saúde Mental filtradas -->
 <div v-if="noticiasFiltradas.noticiasFiltradasSaudeMental.length">
@@ -256,6 +265,37 @@ const editarNoticia = (noticia) => {
 </template>
 
 <style scoped>
+/* Ícones de edição e remoção inicialmente invisíveis */
+.icone-editar, .icone-remover {
+  opacity: 0; /* Esconde os ícones */
+  transition: opacity 0.3s ease, color 0.3s ease; /* Transição suave para opacidade e cor */
+}
+
+/* Quando o cursor passar sobre a card, ícones se tornam visíveis */
+.card:hover .icone-editar,
+.card:hover .icone-remover {
+  opacity: 1; /* Torna os ícones visíveis */
+}
+
+/* Cor sofisticada para os ícones */
+.icone-editar {
+  color: #B88B4A; /* Tom dourado suave */
+}
+
+.icone-remover {
+  color: #5C5C5C; /* Tom metálico (cinza escuro) */
+}
+
+/* Mudando a cor dos ícones ao passar o cursor sobre eles */
+.card:hover .icone-editar {
+  color: #D4A017; /* Cor dourada mais intensa ao passar o mouse */
+}
+
+.card:hover .icone-remover {
+  color: #A9A9A9; /* Cor metálica mais clara ao passar o mouse */
+}
+
+
 .custom-card-group {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

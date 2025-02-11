@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
+import Header from '@/components/Header.vue';
 
 // Defina sua chave de API aqui
 const apiKey = 'cf3c67159394429bb05f26501010b6b6';  // Substitua 'YOUR_API_KEY' pela chave da sua API
@@ -76,39 +77,10 @@ const noticiasFiltradas = computed(() => {
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
     <body>
-      <nav style="background-color: white !important; margin-left: 0%" class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-          <form class="d-flex" role="search">
-            <RouterLink style="margin: 7%; margin-left: 600%; margin-top: 12%; display: flex;" class="nav-link active" to="/saude">
-              <a aria-current="page">Saúde</a>
-            </RouterLink>
-            <RouterLink to="/esporte">
-              <a style="margin: 4%; margin-top: 34%; color: #030E43;" class="nav-link active" aria-current="page">Esportes</a>
-            </RouterLink>
-            <RouterLink to="/sobre">
-              <a style="margin: 55%; margin-top: 51%; color: #030E43" class="nav-link active" aria-current="page">Sobre</a>
-            </RouterLink>
-            <RouterLink to="/">
-              <a style="margin: 165%; margin-top: 80%; color: #030E43" class="nav-link active" aria-current="page">Sair</a>
-            </RouterLink>
-          </form>
-        </div>
-        <img id="logoImage" src="../assets/1.png" alt="Logo">
-      </nav>    
-
-      <nav style="background-color: #356AAF !important; height: 94px; margin-top: -2%" class="navbar bg-body-tertiary">
-        <div style="margin-top: -0.5%; color: white; margin-left: -6.5%;" class="container-fluid">
-          <form class="d-flex" role="search">
-            <input style="visibility: hidden;" id="buscar" type="search">
-            <a style="margin: 3%; margin-left: 157%; margin-top: 5%;" class="nav-link active" aria-current="page" href="#futebol">FUTEBOL</a>
-            <a style="margin: 4%; margin-top: 5%;" class="nav-link active" aria-current="page" href="#brasileirao">BRASILEIRÃO</a>
-            <a style="margin: 5%;" class="nav-link active" aria-current="page" href="#libertadores">LIBERTADORES</a>
-          </form>
-        </div>
-      </nav>    
-
+      <Header/>
+  
       <h1 style="text-decoration: underline; text-align: center; margin-top: 7%; color: #092553;">ESPORTES</h1>
-
+    
       <!-- Campo de pesquisa -->
       <div class="container mb-4" style="margin-top: 4%;">
         <input 
@@ -119,72 +91,185 @@ const noticiasFiltradas = computed(() => {
           aria-label="Pesquisar notícias">
       </div>
 
-      <!-- Exibir notícias de Futebol -->
-      <h2 id="futebol" style="text-align: center;">Futebol</h2>
-      <div v-if="noticiasFiltradas.futebol.length">
-        <div class="card mb-4" style="max-width: 1200px; margin: 0 auto;" v-for="(noticia, index) in noticiasFiltradas.futebol" :key="index">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img :src="noticia.urlToImage" class="img-fluid rounded-start" alt="Imagem da notícia">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <a :href="noticia.url" target="_blank">
-                  <h1 class="card-title">{{ noticia.title }}</h1>
-                </a>
-                <p class="card-text">{{ noticia.description }}</p>
-                <p><small>Publicado em: {{ new Date(noticia.publishedAt).toLocaleDateString('pt-BR') }}</small></p>
-              </div>
-            </div>
-          </div>
-        </div>
+   <!-- Exibir notícias de Futebol -->
+<h2 id="futebol" style="text-align: center;">Futebol</h2>
+<div v-if="noticiasFiltradas.futebol.length">
+  <div class="card-group">
+    <div class="card" v-for="(noticia, index) in noticiasFiltradas.futebol" :key="index">
+      <img :src="noticia.urlToImage" class="card-img-top" alt="Imagem da notícia">
+      <div class="card-body">
+        <a :href="noticia.url" target="_blank">
+          <h5 class="card-title">{{ noticia.title }}</h5>
+        </a>
+        <p class="card-text">{{ noticia.description }}</p>
+        <p class="card-text"><small class="text-body-secondary">Publicado em: {{ new Date(noticia.publishedAt).toLocaleDateString('pt-BR') }}</small></p>
       </div>
+    </div>
+  </div>
+</div>
 
-      <!-- Exibir notícias do Brasileirão -->
-      <h2 id="brasileirao" style="text-align: center;">Brasileirão</h2>
-      <div v-if="noticiasFiltradas.brasileirao.length">
-        <div class="card mb-4" style="max-width: 1200px; margin: 0 auto;" v-for="(noticia, index) in noticiasFiltradas.brasileirao" :key="index">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img :src="noticia.urlToImage" class="img-fluid rounded-start" alt="Imagem da notícia">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <a :href="noticia.url" target="_blank">
-                  <h1 class="card-title">{{ noticia.title }}</h1>
-                </a>
-                <p class="card-text">{{ noticia.description }}</p>
-                <p><small>Publicado em: {{ new Date(noticia.publishedAt).toLocaleDateString('pt-BR') }}</small></p>
-              </div>
-            </div>
-          </div>
-        </div>
+<!-- Exibir notícias do Brasileirão -->
+<h2 id="brasileirao" style="text-align: center;">Brasileirão</h2>
+<div v-if="noticiasFiltradas.brasileirao.length">
+  <div class="card-group">
+    <div class="card" v-for="(noticia, index) in noticiasFiltradas.brasileirao" :key="index">
+      <img :src="noticia.urlToImage" class="card-img-top" alt="Imagem da notícia">
+      <div class="card-body">
+        <a :href="noticia.url" target="_blank">
+          <h5 class="card-title">{{ noticia.title }}</h5>
+        </a>
+        <p class="card-text">{{ noticia.description }}</p>
+        <p class="card-text"><small class="text-body-secondary">Publicado em: {{ new Date(noticia.publishedAt).toLocaleDateString('pt-BR') }}</small></p>
       </div>
+    </div>
+  </div>
+</div>
 
-      <!-- Exibir notícias da Libertadores -->
-      <h2 id="libertadores" style="text-align: center;">Libertadores</h2>
-      <div v-if="noticiasFiltradas.libertadores.length">
-        <div class="card mb-4" style="max-width: 1200px; margin: 0 auto;" v-for="(noticia, index) in noticiasFiltradas.libertadores" :key="index">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img :src="noticia.urlToImage" class="img-fluid rounded-start" alt="Imagem da notícia">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <a :href="noticia.url" target="_blank">
-                  <h1 class="card-title">{{ noticia.title }}</h1>
-                </a>
-                <p class="card-text">{{ noticia.description }}</p>
-                <p><small>Publicado em: {{ new Date(noticia.publishedAt).toLocaleDateString('pt-BR') }}</small></p>
-              </div>
-            </div>
-          </div>
-        </div>
+<!-- Exibir notícias da Libertadores -->
+<h2 id="libertadores" style="text-align: center;">Libertadores</h2>
+<div v-if="noticiasFiltradas.libertadores.length">
+  <div class="card-group">
+    <div class="card" v-for="(noticia, index) in noticiasFiltradas.libertadores" :key="index">
+      <img :src="noticia.urlToImage" class="card-img-top" alt="Imagem da notícia">
+      <div class="card-body">
+        <a :href="noticia.url" target="_blank">
+          <h5 class="card-title">{{ noticia.title }}</h5>
+        </a>
+        <p class="card-text">{{ noticia.description }}</p>
+        <p class="card-text"><small class="text-body-secondary">Publicado em: {{ new Date(noticia.publishedAt).toLocaleDateString('pt-BR') }}</small></p>
       </div>
-    </body>
-  </html>
+    </div>
+  </div>
+</div>
+</body>
+</html>
 </template>
 
 <style scoped>
-  /* O estilo pode ser o mesmo utilizado para as notícias de saúde. Caso queira adicionar ou modificar algo, altere aqui */
+/* Estilo geral do corpo */
+body {
+  background-color: #f2f2f2;
+  font-family: 'Arial', sans-serif; /* Fonte mais legível */
+  margin: 0;
+  padding: 0;
+}
+
+/* Títulos */
+h1 {
+  text-decoration: underline;
+  text-align: center;
+  margin-top: 7%;
+  color: #092553;
+  font-size: 2.5rem; /* Tamanho maior e mais imponente */
+}
+
+h2 {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 1.75rem;
+  color: #356aaf; /* Cor consistente com o tema */
+}
+
+/* Barra de navegação superior */
+.navbar {
+  background-color: #356aaf !important;
+  height: 94px;
+  margin-top: -2%;
+}
+
+.navbar .nav-link {
+  color: #fff !important;
+  margin-right: 20px;
+}
+
+.navbar .nav-link:hover {
+  text-decoration: underline;
+}
+
+/* Estilo para a pesquisa */
+.container {
+  margin-top: 4%;
+}
+
+input[type="search"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+/* Grid layout para os cards, responsivo */
+.card-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 30px;
+  padding: 0 5%;
+}
+
+/* Estilo base para os cards */
+.card {
+  border: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-img-top {
+  object-fit: cover;
+  height: 200px;
+  width: 100%;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #356aaf;
+  margin-top: 1rem;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.card .text-muted {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card a:hover {
+  text-decoration: underline;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 1024px) {
+  .card-group {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .card-group {
+    grid-template-columns: 1fr;
+  }
+}
 </style>

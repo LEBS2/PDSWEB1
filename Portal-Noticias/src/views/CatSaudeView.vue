@@ -1,6 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import { ref, onMounted, computed } from 'vue';
+import Header from '@/components/Header.vue';
 
 // Defina sua chave de API aqui
 const apiKey = 'cf3c67159394429bb05f26501010b6b6';  // Substitua 'YOUR_API_KEY' pela chave da sua API
@@ -67,7 +68,6 @@ const noticiasFiltradas = computed(() => {
   };
 });
 </script>
-
 <template>
   <html lang="pt">
     <head>
@@ -77,41 +77,12 @@ const noticiasFiltradas = computed(() => {
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
     <body>
-      <nav style="background-color: white !important; margin-left: 0%" class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-          <form class="d-flex" role="search">
-            <RouterLink style="margin: 7%; margin-left: 600%; margin-top: 12%; display: flex;" class="nav-link active" to="/saude">
-              <a aria-current="page">Saúde</a>
-            </RouterLink>
-            <RouterLink to="/esporte">
-              <a style="margin: 4%; margin-top: 34%; color: #030E43;" class="nav-link active" aria-current="page">Esportes</a>
-            </RouterLink>
-            <RouterLink to="/sobre">
-              <a style="margin: 55%; margin-top: 51%; color: #030E43" class="nav-link active" aria-current="page">Sobre</a>
-            </RouterLink>
-            <RouterLink to="/">
-              <a style="margin: 165%; margin-top: 80%; color: #030E43" class="nav-link active" aria-current="page">Sair</a>
-            </RouterLink>
-          </form>
-        </div>
-        <img id="logoImage" src="../assets/1.png" alt="Logo">
-      </nav>    
-
-      <nav style="background-color: #356AAF !important; height: 94px; margin-top: -2%" class="navbar bg-body-tertiary">
-        <div style="margin-top: -0.5%; color: white; margin-left: -6.5%;" class="container-fluid">
-          <form class="d-flex" role="search">
-            <input style="visibility: hidden;" id="buscar" type="search">
-            <a style="margin: 3%; margin-left: 157%; margin-top: 5%;" class="nav-link active" aria-current="page" href="#saudeMental">SAÚDE MENTAL</a>
-            <a style="margin: 4%; margin-top: 5%;" class="nav-link active" aria-current="page" href="#vidaFitness">VIDA FITNESS</a>
-            <a style="margin: 5%;" class="nav-link active" aria-current="page" href="#bemEstar">BEM-ESTAR</a>
-          </form>
-        </div>
-      </nav>    
-
+      <Header/>
+      <!-- Seu código de navegação permanece o mesmo -->
       <h1 style="text-decoration: underline; text-align: center; margin-top: 7%; color: #092553;">SAÚDE</h1>
 
       <div class="container mb-4" style="margin-top: 4%;">
-        <input 
+        <input  
           v-model="searchQuery" 
           type="search" 
           class="form-control" 
@@ -122,66 +93,51 @@ const noticiasFiltradas = computed(() => {
       <br><br><br><br>
 
       <!-- Exibir notícias de Saúde Mental -->
-      <h2 id="saudeMental" style="text-align: center;">Saúde Mental</h2>
+      <h2 id="saudeMental" style="text-align: center; color: #356aaf;">Saúde Mental</h2>
       <div v-if="noticiasFiltradas.saudeMental.length">
-        <div class="card mb-4" style="max-width: 1200px; margin: 0 auto;" v-for="(noticia, index) in noticiasFiltradas.saudeMental" :key="index">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img :src="noticia.urlToImage" class="img-fluid rounded-start" alt="Imagem da notícia">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <!-- Link no título -->
-                <a :href="noticia.url" target="_blank">
-                  <h1 class="card-title">{{ noticia.title }}</h1>
-                </a>
-                <p class="card-text">{{ noticia.description }}</p>
-                <p><small>Publicado em: {{ new Date(noticia.publishedAt).toLocaleDateString('pt-BR') }}</small></p>
-              </div>
+        <div class="card-group custom-card-group">
+          <div class="card custom-card" v-for="(noticia, index) in noticiasFiltradas.saudeMental" :key="index">
+            <img :src="noticia.urlToImage" class="card-img-top" alt="Imagem da notícia">
+            <div class="card-body">
+              <a :href="noticia.url" target="_blank">
+                <h5 class="card-title">{{ noticia.title }}</h5>
+              </a>
+              <p class="card-text">{{ noticia.description }}</p>
+              <p><small class="text-muted">Publicado em: {{ new Date(noticia.publishedAt).toLocaleDateString('pt-BR') }}</small></p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Exibir notícias de Vida Fitness -->
-      <h2 id="vidaFitness" style="text-align: center;">Vida Fitness</h2>
+      <h2 id="vidaFitness" style="text-align: center; color: #356aaf;">Vida Fitness</h2>
       <div v-if="noticiasFiltradas.vidaFitness.length">
-        <div class="card mb-4" style="max-width: 1200px; margin: 0 auto;" v-for="(noticia, index) in noticiasFiltradas.vidaFitness" :key="index">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img :src="noticia.urlToImage" class="img-fluid rounded-start" alt="Imagem da notícia">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <!-- Link no título -->
-                <a :href="noticia.url" target="_blank">
-                  <h1 class="card-title">{{ noticia.title }}</h1>
-                </a>
-                <p class="card-text">{{ noticia.description }}</p>
-                <p><small>Publicado em: {{ new Date(noticia.publishedAt).toLocaleDateString('pt-BR') }}</small></p>
-              </div>
+        <div class="card-group custom-card-group">
+          <div class="card custom-card" v-for="(noticia, index) in noticiasFiltradas.vidaFitness" :key="index">
+            <img :src="noticia.urlToImage" class="card-img-top" alt="Imagem da notícia">
+            <div class="card-body">
+              <a :href="noticia.url" target="_blank">
+                <h5 class="card-title">{{ noticia.title }}</h5>
+              </a>
+              <p class="card-text">{{ noticia.description }}</p>
+              <p><small class="text-muted">Publicado em: {{ new Date(noticia.publishedAt).toLocaleDateString('pt-BR') }}</small></p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Exibir notícias de Bem-estar -->
-      <h2 id="bemEstar" style="text-align: center;">Bem-estar</h2>
+      <h2 id="bemEstar" style="text-align: center; color: #356aaf;">Bem-estar</h2>
       <div v-if="noticiasFiltradas.bemEstar.length">
-        <div class="card mb-4" style="max-width: 1200px; margin: 0 auto;" v-for="(noticia, index) in noticiasFiltradas.bemEstar" :key="index">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img :src="noticia.urlToImage" class="img-fluid rounded-start" alt="Imagem da notícia">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <!-- Link no título -->
-                <a :href="noticia.url" target="_blank">
-                  <h1 class="card-title">{{ noticia.title }}</h1>
-                </a>
-                <p class="card-text">{{ noticia.description }}</p>
-                <p><small>Publicado em: {{ new Date(noticia.publishedAt).toLocaleDateString('pt-BR') }}</small></p>
-              </div>
+        <div class="card-group custom-card-group">
+          <div class="card custom-card" v-for="(noticia, index) in noticiasFiltradas.bemEstar" :key="index">
+            <img :src="noticia.urlToImage" class="card-img-top" alt="Imagem da notícia">
+            <div class="card-body">
+              <a :href="noticia.url" target="_blank">
+                <h5 class="card-title">{{ noticia.title }}</h5>
+              </a>
+              <p class="card-text">{{ noticia.description }}</p>
+              <p><small class="text-muted">Publicado em: {{ new Date(noticia.publishedAt).toLocaleDateString('pt-BR') }}</small></p>
             </div>
           </div>
         </div>
@@ -191,5 +147,85 @@ const noticiasFiltradas = computed(() => {
 </template>
 
 <style scoped>
-/* Seu CSS permanece o mesmo */
+body{
+  background-color: #f2f2f2;
+}
+
+/* Grid layout para os cards, responsivo */
+.custom-card-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; /* Espaço entre os cards */
+  margin-top: 30px;
+  padding: 0 5%; /* Distância das bordas */
+}
+
+/* Estilo base para todos os cards */
+.custom-card {
+  border: none; /* Remover bordas padrões */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  border-radius: 10px; /* Bordas arredondadas */
+  overflow: hidden; /* Assegura que a imagem se ajusta ao card */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Efeito de transição suave */
+  background-color: #fff; /* Cor de fundo branca */
+}
+
+.custom-card:hover {
+  transform: translateY(-5px); /* Levanta o card no hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Sombra mais forte no hover */
+}
+
+.custom-card .card-body {
+  padding: 1rem; /* Padding interno */
+}
+
+.custom-card img {
+  object-fit: cover;
+  height: 200px; /* Tamanho fixo para a imagem */
+  width: 100%;
+}
+
+.custom-card .card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #356aaf; /* Cor do título */
+  margin-top: 1rem;
+}
+
+.custom-card .card-text {
+  font-size: 1rem;
+  color: #666; /* Texto de descrição */
+  margin-top: 0.5rem;
+}
+
+.custom-card .text-muted {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.custom-card a {
+  text-decoration: none;
+  color: inherit; /* Link sem sublinhado */
+}
+
+.custom-card a:hover {
+  text-decoration: underline; /* Sublinha o link no hover */
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 1024px) {
+  .custom-card-group {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .custom-card {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-card-group {
+    grid-template-columns: 1fr;
+  }
+}
 </style>

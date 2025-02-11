@@ -64,30 +64,31 @@ informações sobre esportes, economia e saúde. </p>
 
         <h1 style="margin-left: 4%; margin-top: -42%; color: white;">QUEM SOMOS?</h1>
 
-        <img style="width: 20%; margin-left: 20%; height: 270px; border-radius: 50%; margin-top: 2%;" src="../assets/WhatsApp Image 2024-11-18 at 03.43.26.jpeg">
+        <img style="width: 17%; margin-left: 40%; height: 210px; border-radius: 50%; margin-top: 2%;" src="../assets/WhatsApp Image 2024-11-18 at 03.43.26.jpeg">
 
-<p style="margin-left: 20%; margin-top: 2%; color: white;">Andrielly Firmino de Lima, estudante <br> do curso superior tecnólogo em  <br>  Análise e Desenvolvimento de  <br> Sistemas do IFPE Campus Palmares</p>
+<p style="text-align: center; margin-left: -2%; margin-top: 2%; color: white;">Andrielly Firmino de Lima, estudante <br> do curso superior tecnólogo em  <br>  Análise e Desenvolvimento de  <br> Sistemas do IFPE Campus Palmares</p>
 
-<img  style="width: 20%; margin-left: 60%; height: 270px; border-radius: 50%; margin-top: -42%;" src="../assets/WhatsApp Image 2024-11-18 at 03.43.54.jpeg">
 
-<p style="margin-left: 62%; margin-top: -11%; color: white;">Luiz Eduardo Barretto da Silva, <br> estudante do curso superior <br> tecnólogo em Análise e <br> Desenvolvimento de Sistemas do <br> IFPE Campus Palmares </p>
      </form>
 
-     <h1 style="margin-left: 43%; margin-top: 10%; text-decoration: none; color: #092553;">CONTATOS</h1>
 
-     <div style="margin-left: 11%;">
+     <div style="display: flex; justify-content: space-evenly; align-items: center; padding: 40px 10%; background-color: white; color: #333;">
 
-<img class="logoCartoes" src="https://static.vecteezy.com/ti/vetor-gratis/p1/14414683-logotipo-preto-do-instagram-em-fundo-transparente-gratis-vetor.jpg">
+<!-- Redes sociais -->
+<div style="text-align: center;">
+  <img class="logoCartoes" src="https://static.vecteezy.com/ti/vetor-gratis/p1/14414683-logotipo-preto-do-instagram-em-fundo-transparente-gratis-vetor.jpg" style="width: 30px; height: 30px;">
+  <p style="font-size: 14px; margin-top: 8px;">boas.novas</p>
+</div>
 
-<img class="logoCartoes" src="https://cdn-icons-png.flaticon.com/512/2111/2111774.png">
+<div style="text-align: center;">
+  <img class="logoCartoes" src="https://cdn-icons-png.flaticon.com/512/2111/2111774.png" style="width: 30px; height: 30px;">
+  <p style="font-size: 14px; margin-top: 8px;">boas_novas</p>
+</div>
 
-<img class="logoCartoes" src="https://cdn3.iconfinder.com/data/icons/social-media-2527/24/glyph_facebook_facebook_logo_logo_logotype_letter_f_social_media_social_media-512.png">
-
-<P style="font-size: 21px; margin-left: 16%;">boas.novas</P>
-
-<p style="font-size: 21px; margin-left: 36%; margin-top: -3.5%;">(81) 9.9021-3218</p>
-
-<p style="font-size: 21px; margin-left: 62%; margin-top: -4%;">boas_novas</p>
+<div style="text-align: center;">
+  <img class="logoCartoes" src="https://cdn3.iconfinder.com/data/icons/social-media-2527/24/glyph_facebook_facebook_logo_logo_logotype_letter_f_social_media_social_media-512.png" style="width: 30px; height: 30px;">
+  <p style="font-size: 14px; margin-top: 8px;">(81) 9.9021-3218</p>
+</div>
 
 </div>
 
